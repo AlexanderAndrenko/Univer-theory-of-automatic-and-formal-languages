@@ -1,0 +1,35 @@
+﻿<Window x:Class="Translator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Translator"
+        mc:Ignorable="d"
+        Title="Finite-state machine" Height="450" Width="800" >
+    <Grid Margin="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,5,0,5">Добро пожаловать в симулятор детерминированного конечного автомата</TextBlock>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Определите количество символов алфавитов:"/>
+            <StackPanel Orientation="Horizontal">
+                <Image Grid.Row="1" Source="images/first.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                <TextBlock Text=" : " FontSize="16"/>
+                <TextBox Name="TerminalSymbol" Width="25" Height="25" ></TextBox>
+                <Image Grid.Row="1" Source="images/second.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                <TextBlock Text=" : " FontSize="16"/>
+                <TextBox Name="SymbolOfState" Width="25" Height="25" ></TextBox>
+                <Button Name="SetSymbolOfAlphabet" Margin="30,0,0,0" Height="25" Width="25">Ok</Button>
+            </StackPanel>
+            <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите таблицу переходов:"/>
+            
+        </StackPanel>
+    </Grid>
+</Window>

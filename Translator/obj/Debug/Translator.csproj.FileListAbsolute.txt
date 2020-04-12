@@ -1,0 +1,15 @@
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\bin\Debug\Translator.exe.config
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\bin\Debug\Translator.exe
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\bin\Debug\Translator.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\Translator.csprojAssemblyReference.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\MainWindow.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\App.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\Translator_MarkupCompile.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\Translator_MarkupCompile.lref
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\MainWindow.baml
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\Translator.g.resources
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\Translator.Properties.Resources.resources
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\Translator.csproj.GenerateResource.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\Translator.csproj.CoreCompileInputs.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\Translator.exe
+F:\Документы Александр\Универ СибГУ\Трансляторы\Translator\Translator\obj\Debug\Translator.pdb
