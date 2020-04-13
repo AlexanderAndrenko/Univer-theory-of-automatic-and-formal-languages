@@ -8,16 +8,16 @@
         Title="Finite-state machine" Height="450" Width="800" >
     <Grid Margin="4">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="400"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,5,0,5">Добро пожаловать в симулятор детерминированного конечного автомата</TextBlock>
-        <StackPanel Grid.Row="1" Orientation="Vertical">
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="186,5,184,5" Width="414">Добро пожаловать в симулятор детерминированного конечного автомата</TextBlock>
+        <StackPanel Grid.Row="1" Orientation="Vertical" Grid.RowSpan="2">
             <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Определите количество символов алфавитов:"/>
             <StackPanel Orientation="Horizontal">
                 <Image Grid.Row="1" Source="images/first.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
@@ -29,7 +29,15 @@
                 <Button Name="SetSymbolOfAlphabet" Margin="30,0,0,0" Height="25" Width="25">Ok</Button>
             </StackPanel>
             <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите таблицу переходов:"/>
-            
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Из состояния: " VerticalAlignment="Center"/>
+                <TextBlock Name="State" Width="25" Height="25"/>
+                <TextBlock Text=" при команде: " VerticalAlignment="Center"/>
+                <TextBlock x:Name="Command" Width="25" Height="25"/>
+                <TextBlock Text=" переход в состояние: " VerticalAlignment="Center"/>
+                <TextBox Width="25" Height="25"/>
+                <Button Name="SetConversionTable" Margin="5,0,0,0" Height="25" Width="25">Ok</Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

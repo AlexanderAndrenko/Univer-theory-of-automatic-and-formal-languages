@@ -8,6 +8,12 @@ namespace Translator.Models
 {
     class FiniteStateMachine
     {
-        private ConversionTable[][];
+        public char[,] conversionTable;
+
+        public FiniteStateMachine(int n, int m)
+        {
+            conversionTable = new char[n, m];
+        }
+
     }
 }
