@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Translator.Models;
 
 namespace Translator
 {
@@ -22,7 +23,16 @@ namespace Translator
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
+        }
+
+        private void SetSymbolOfAlphabet_Click(object sender, RoutedEventArgs e)
+        {
+            FiniteStateMachine a = new FiniteStateMachine(2, 2);
+
+            int [] array = new int[2] { 2, 1 };
+
+            //ConversionTableDataGrid.ItemsSource = a.conversionTable;
         }
     }
 }

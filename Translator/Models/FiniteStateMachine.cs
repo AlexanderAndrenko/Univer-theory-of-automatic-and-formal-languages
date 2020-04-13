@@ -6,14 +6,27 @@ using System.Threading.Tasks;
 
 namespace Translator.Models
 {
-    class FiniteStateMachine
+    public class FiniteStateMachine
     {
-        public char[,] conversionTable;
+        public StateOfMachine[] conversionTable;
 
         public FiniteStateMachine(int n, int m)
         {
-            conversionTable = new char[n, m];
+            conversionTable = new StateOfMachine[n];
+
+            for (int index = 0; index < n; index++)
+            {
+                conversionTable[index] = new StateOfMachine(m);
+            }
         }
 
+        public class StateOfMachine
+        {
+            public char[] nextState;
+            public StateOfMachine(int m)
+            {
+                nextState = new char[m];
+            }
+        }
     }
 }
