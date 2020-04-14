@@ -20,13 +20,25 @@ namespace Translator.Models
             }
         }
 
-        public class StateOfMachine
-        {
-            public char[] nextState;
-            public StateOfMachine(int m)
+            public class StateOfMachine
             {
-                nextState = new char[m];
+                public char[] nextState;
+                public StateOfMachine(int m)
+                {
+                    nextState = new char[m];
+                }
+
+                public void setValue(int state, char number)
+                {
+                    nextState[state] = number;
+                }
             }
+
+        public void setConversion(int index, int state, char number)
+        {
+            conversionTable[index].setValue(state, number);
         }
+
+        
     }
 }

@@ -39,7 +39,7 @@
                 <Button Name="SetConversionTable" Margin="5,0,0,0" Height="25" Width="25">Ok</Button>
             </StackPanel>
         </StackPanel>
-        <DataGrid Grid.Row="2" Name="ConversionTableDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="True">
+        <DataGrid Grid.Row="2" Name="ConversionTableDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="True" ColumnWidth="25">
             
         </DataGrid>
     </Grid>

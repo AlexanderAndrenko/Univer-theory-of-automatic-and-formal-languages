@@ -28,11 +28,21 @@ namespace Translator
 
         private void SetSymbolOfAlphabet_Click(object sender, RoutedEventArgs e)
         {
-            FiniteStateMachine a = new FiniteStateMachine(2, 2);
 
-            int [] array = new int[2] { 2, 1 };
+            int numberOfState =  int.Parse(SymbolOfState.Text);
+            int numberOfCommand = int.Parse(TerminalSymbol.Text);
 
-            //ConversionTableDataGrid.ItemsSource = a.conversionTable;
+            FiniteStateMachine a = new FiniteStateMachine(numberOfCommand, numberOfState);
+
+            DataGridTextColumn[] textcol = new DataGridTextColumn[numberOfState];
+
+            for (int i = 0; i < numberOfState; i++)
+            {
+                textcol[i] = new DataGridTextColumn();
+                textcol[i].Header = 'a';
+                ConversionTableDataGrid.Columns.Add(textcol[i]);
+            }         
+
         }
     }
 }
