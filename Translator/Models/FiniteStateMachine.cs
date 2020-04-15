@@ -3,42 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Translator.Models
 {
     public class FiniteStateMachine
     {
-        public StateOfMachine[] conversionTable;
-
-        public FiniteStateMachine(int n, int m)
+        public string[] conversion;
+        public DataGridTextColumn nameOfColumn;
+        public Binding dataColumn;
+        public FiniteStateMachine(int command, string name)
         {
-            conversionTable = new StateOfMachine[n];
+            conversion = new string[command];
 
-            for (int index = 0; index < n; index++)
-            {
-                conversionTable[index] = new StateOfMachine(m);
-            }
-        }
-
-            public class StateOfMachine
-            {
-                public char[] nextState;
-                public StateOfMachine(int m)
-                {
-                    nextState = new char[m];
-                }
-
-                public void setValue(int state, char number)
-                {
-                    nextState[state] = number;
-                }
-            }
-
-        public void setConversion(int index, int state, char number)
-        {
-            conversionTable[index].setValue(state, number);
-        }
-
-        
+            nameOfColumn = new DataGridTextColumn();
+            nameOfColumn.Binding = conversion;
+            nameOfColumn.Header = Convert.ToString(name);
+            
+        }   
     }
 }
