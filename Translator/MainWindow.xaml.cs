@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 using Translator.Models;
 
 namespace Translator
@@ -32,15 +33,15 @@ namespace Translator
             int numberOfState =  int.Parse(SymbolOfState.Text);
             int numberOfCommand = int.Parse(TerminalSymbol.Text);
 
-            FiniteStateMachine a = new FiniteStateMachine(numberOfCommand, numberOfState);
-
-            DataGridTextColumn[] textcol = new DataGridTextColumn[numberOfState];
+            FiniteStateMachine[] textcol = new FiniteStateMachine[numberOfState];
 
             for (int i = 0; i < numberOfState; i++)
             {
-                textcol[i] = new DataGridTextColumn();
-                textcol[i].Header = 'a';
-                ConversionTableDataGrid.Columns.Add(textcol[i]);
+                textcol[i] = new FiniteStateMachine(numberOfCommand, "a");                
+                ConversionTableDataGrid.Columns.Add(textcol[i].nameOfColumn);
+
+                ObservableCollection<FiniteStateMachine> dataForColumn = GetData(textcol[i].conversion);
+                ConversionTableDataGrid.DataContext = textcol[i].conversion;
             }         
 
         }

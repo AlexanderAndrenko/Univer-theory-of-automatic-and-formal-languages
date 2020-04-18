@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Translator;
 
 namespace Translator.Models
 {
@@ -18,10 +19,15 @@ namespace Translator.Models
         {
             conversion = new string[command];
 
+            for (int i = 0; i < command; i++)
+            {
+                conversion[i] = Convert.ToString(i);
+            }
+
             nameOfColumn = new DataGridTextColumn();
-            nameOfColumn.Binding = conversion;
+            dataColumn = new Binding(Convert.ToString(conversion));
+            nameOfColumn.Binding = dataColumn;
             nameOfColumn.Header = Convert.ToString(name);
-            
         }   
     }
 }
