@@ -10,24 +10,27 @@ using Translator;
 
 namespace Translator.Models
 {
+    /*Класс объект которого отражает одно состояние детерминированного конечного автомата */
     public class FiniteStateMachine
     {
-        public string[] conversion;
-        public DataGridTextColumn nameOfColumn;
-        public Binding dataColumn;
+        public string[] conversion;//массив отобажающий таблицу перехода для конкретного состояния
+        public DataGridTextColumn nameOfColumn;//объект для создания колонки
+        public Binding dataColumn;//объект для привязки данных
+
+        /*Конструктор класса*/
         public FiniteStateMachine(int command, string name)
         {
-            conversion = new string[command];
+            this.conversion = new string[command];
+            this.nameOfColumn = new DataGridTextColumn();
+            this.dataColumn = new Binding(Convert.ToString(conversion));//Привязка массива к объекту типа Binding 
+            this.nameOfColumn.Binding = dataColumn;//Привязка данных к объекту колонки
+            this.nameOfColumn.Header = Convert.ToString(name);//Привязка названия колонки
+        }
 
-            for (int i = 0; i < command; i++)
-            {
-                conversion[i] = Convert.ToString(i);
-            }
-
-            nameOfColumn = new DataGridTextColumn();
-            dataColumn = new Binding(Convert.ToString(conversion));
-            nameOfColumn.Binding = dataColumn;
-            nameOfColumn.Header = Convert.ToString(name);
-        }   
+        /*?????*/
+        public void setConversion(int index, char nextState)
+        {
+            this.conversion[index] = Convert.ToString(nextState);
+        }
     }
 }

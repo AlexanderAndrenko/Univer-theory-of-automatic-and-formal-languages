@@ -31,15 +31,15 @@
             <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите таблицу переходов:"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Из состояния: " VerticalAlignment="Center"/>
-                <TextBlock Name="State" Width="25" Height="25"/>
+                <TextBlock Name="State" Width="25" Height="25" HorizontalAlignment="Center"/>
                 <TextBlock Text=" при команде: " VerticalAlignment="Center"/>
-                <TextBlock x:Name="Command" Width="25" Height="25"/>
+                <TextBlock x:Name="Command" Width="25" Height="25" HorizontalAlignment="Center"/>
                 <TextBlock Text=" переход в состояние: " VerticalAlignment="Center"/>
-                <TextBox Width="25" Height="25"/>
-                <Button Name="SetConversionTable" Margin="5,0,0,0" Height="25" Width="25">Ok</Button>
+                <TextBox Width="25" Height="25" Name="NextState"/>
+                <Button Name="SetConversionTable" Margin="5,0,0,0" Height="25" Width="25" Click="SetConversionTable_Click">Ok</Button>
             </StackPanel>
         </StackPanel>
-        <DataGrid Grid.Row="2" Name="ConversionTableDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="True" ColumnWidth="25">
+        <DataGrid Grid.Row="2" Name="ConversionTableDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="True" ColumnWidth="25" RowHeaderWidth="20" >
             
         </DataGrid>
     </Grid>

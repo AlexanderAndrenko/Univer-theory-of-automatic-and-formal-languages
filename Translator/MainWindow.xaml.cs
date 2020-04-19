@@ -15,35 +15,96 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using Translator.Models;
 
+
+
 namespace Translator
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+    
     public partial class MainWindow : Window
     {
+        bool isCreated = false;//Перменная состояния - созданы ли объекты представляющие конечный автомат
+        //bool isClick = false;
+        int state = 0;//Отражает состояние для которого задаётся таблица перехода
+        int command = 0;//Отражает комануд для которого задаётся таблица перехода
+
         public MainWindow()
         {
             InitializeComponent();            
         }
 
+        /*Функция обработки нажатия на кнопку SetSymbolOfAlphabet*/
         private void SetSymbolOfAlphabet_Click(object sender, RoutedEventArgs e)
         {
+            if (!isCreated)
+            {
+                createObjectsForTable();
+            }
 
-            int numberOfState =  int.Parse(SymbolOfState.Text);
-            int numberOfCommand = int.Parse(TerminalSymbol.Text);
+            isCreated = true;
+        }
 
-            FiniteStateMachine[] textcol = new FiniteStateMachine[numberOfState];
+        /*Функция обработки нажатия на кнопку SetConversionTable*/
+        private void SetConversionTable_Click(object sender, RoutedEventArgs e)
+        {
+           // isClick = true;
+        }
 
+        /*Функция создаёт объекты отображающие внутренее представление детерминированого конечного автомата (один объект - одно состояние*/
+        public void createObjectsForTable()
+        {
+            int numberOfState = int.Parse(SymbolOfState.Text);//Определяет количество состояний
+            int numberOfCommand = int.Parse(TerminalSymbol.Text);//Определяет количество возможных команд
+
+            FiniteStateMachine[] textcol = new FiniteStateMachine[numberOfState];//объявление массива объектов (состояний)
+
+            //инициализация объектов (состояний)
             for (int i = 0; i < numberOfState; i++)
             {
-                textcol[i] = new FiniteStateMachine(numberOfCommand, "a");                
-                ConversionTableDataGrid.Columns.Add(textcol[i].nameOfColumn);
+                textcol[i] = new FiniteStateMachine(numberOfCommand, visualState(i));//создание объекта
+                ConversionTableDataGrid.Columns.Add(textcol[i].nameOfColumn);//Создание колонки для данного состояния с именем "nameOfColumn"
 
-                ObservableCollection<FiniteStateMachine> dataForColumn = GetData(textcol[i].conversion);
-                ConversionTableDataGrid.DataContext = textcol[i].conversion;
-            }         
+                /*возможно  необходимо вывести DataContext в другую функцию, чтобы каждый раз обновлять отображение DataGrid*/
+                ConversionTableDataGrid.DataContext = textcol[i].conversion;//Отображение "таблицы переходов"
+            }
+            
+            /*визуализация сотояния и команды для строки заполнения таблицы переходов */
+            Command.Text = Convert.ToString(command + 1);
+            State.Text = visualState(state);
+        }
 
+        /*функция конвертации номера состояния в строку
+         (проверить надо ли вообще?)
+         */
+        public string visualState(int valueOfCommand)
+        {
+            string result = Convert.ToString(Convert.ToChar(valueOfCommand + 97));
+
+            return result;
         }
     }
 }
+
+
+
+
+//while (true)
+//{
+//    if (isClick)
+//    {
+//        isClick = false;
+
+//        command++;
+//        Command.Text = Convert.ToString(command + 1);
+//        if (command > textcol[state].conversion.Length)
+//        {
+//            state++;
+//            State.Text = visualCommand(state);
+//        }                    
+
+//        textcol[state].conversion[command] = NextState.Text;
+//    }
+//}
