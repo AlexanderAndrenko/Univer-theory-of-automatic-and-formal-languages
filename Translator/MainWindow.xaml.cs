@@ -15,8 +15,6 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using Translator.Models;
 
-
-
 namespace Translator
 {
     /// <summary>
@@ -26,10 +24,12 @@ namespace Translator
     
     public partial class MainWindow : Window
     {
-        bool isCreated = false;//Перменная состояния - созданы ли объекты представляющие конечный автомат
+        bool isCreated = false;//Переменная состояния - созданы ли объекты представляющие конечный автомат
         //bool isClick = false;
         int state = 0;//Отражает состояние для которого задаётся таблица перехода
         int command = 0;//Отражает комануд для которого задаётся таблица перехода
+
+        FiniteStateMachine[] textcol;
 
         public MainWindow()
         {
@@ -50,7 +50,8 @@ namespace Translator
         /*Функция обработки нажатия на кнопку SetConversionTable*/
         private void SetConversionTable_Click(object sender, RoutedEventArgs e)
         {
-           // isClick = true;
+            // isClick = true;
+
         }
 
         /*Функция создаёт объекты отображающие внутренее представление детерминированого конечного автомата (один объект - одно состояние*/
@@ -59,20 +60,33 @@ namespace Translator
             int numberOfState = int.Parse(SymbolOfState.Text);//Определяет количество состояний
             int numberOfCommand = int.Parse(TerminalSymbol.Text);//Определяет количество возможных команд
 
-            FiniteStateMachine[] textcol = new FiniteStateMachine[numberOfState];//объявление массива объектов (состояний)
+            textcol = new FiniteStateMachine[numberOfState];//объявление массива объектов (состояний)
 
             //инициализация объектов (состояний)
+            /*for (int i = 0; i < numberOfState; i++)
+           {
+               textcol[i] = new FiniteStateMachine(numberOfCommand, visualState(i));
+
+               ConversionTableDataGrid.Columns.Add(textcol[i].nameOfColumn);//Создание колонки для данного состояния с именем "nameOfColumn"
+
+               /*возможно  необходимо вывести DataContext в другую функцию, чтобы каждый раз обновлять отображение DataGrid
+               //ConversionTableDataGrid.DataContext = textcol[i].conversion;//Отображение "таблицы переходов"
+               ConversionTableDataGrid.ItemsSource = textcol[i].conversion;
+           }*/
+
             for (int i = 0; i < numberOfState; i++)
             {
-                textcol[i] = new FiniteStateMachine(numberOfCommand, visualState(i));//создание объекта
-                ConversionTableDataGrid.Columns.Add(textcol[i].nameOfColumn);//Создание колонки для данного состояния с именем "nameOfColumn"
+                textcol[i] = new FiniteStateMachine(numberOfCommand, visualState(i));
+
+                gvDataTable.ColumnHeaderContextMenu.Items.Add(textcol[i].nameOfColumn);//Создание колонки для данного состояния с именем "nameOfColumn"
 
                 /*возможно  необходимо вывести DataContext в другую функцию, чтобы каждый раз обновлять отображение DataGrid*/
-                ConversionTableDataGrid.DataContext = textcol[i].conversion;//Отображение "таблицы переходов"
+                //ConversionTableDataGrid.DataContext = textcol[i].conversion;//Отображение "таблицы переходов"
+                gvDataTable.Columns.Add(textcol[i].conversion);
             }
             
             /*визуализация сотояния и команды для строки заполнения таблицы переходов */
-            Command.Text = Convert.ToString(command + 1);
+                Command.Text = Convert.ToString(command + 1);
             State.Text = visualState(state);
         }
 
@@ -84,6 +98,12 @@ namespace Translator
             string result = Convert.ToString(Convert.ToChar(valueOfCommand + 97));
 
             return result;
+        }
+
+        private void ConversionTableDataGrid_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            int index = ConversionTableDataGrid.SelectedIndex;
+            check.Text = Convert.ToString(index);
         }
     }
 }

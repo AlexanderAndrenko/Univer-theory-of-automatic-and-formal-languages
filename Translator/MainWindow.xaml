@@ -39,8 +39,16 @@
                 <Button Name="SetConversionTable" Margin="5,0,0,0" Height="25" Width="25" Click="SetConversionTable_Click">Ok</Button>
             </StackPanel>
         </StackPanel>
-        <DataGrid Grid.Row="2" Name="ConversionTableDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="True" ColumnWidth="25" RowHeaderWidth="20" >
-            
+        <DataGrid Grid.Row="2" Name="ConversionTableDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="True" ColumnWidth="25" RowHeaderWidth="20" SelectionMode="Single" DataContextChanged="ConversionTableDataGrid_DataContextChanged"  >
+
         </DataGrid>
+        <!--<TextBlock Grid.Row="1" Grid.Column="1" Name="check"/>-->
+        <ListView Grid.Row="1" Grid.Column="1">
+            <ListView.View>
+                <GridView x:Name="gvDataTable">
+                
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
