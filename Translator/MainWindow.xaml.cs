@@ -29,9 +29,8 @@ namespace Translator
         int state = 0;//Отражает состояние для которого задаётся таблица перехода
         int command = 0;//Отражает комануд для которого задаётся таблица перехода
 
-       // List<FiniteStateMachine> textcol = new List<FiniteStateMachine>();
-        FiniteStateMachine[] textcol;
-
+        List<FiniteStateMachine> textcol = new List<FiniteStateMachine>();
+        GridView MyGV = new GridView();
         public MainWindow()
         {
             InitializeComponent();            
@@ -61,23 +60,23 @@ namespace Translator
             int numberOfState = int.Parse(SymbolOfState.Text);//Определяет количество состояний
             int numberOfCommand = int.Parse(TerminalSymbol.Text);//Определяет количество возможных команд
 
-            textcol = new FiniteStateMachine[numberOfState];//объявление массива объектов (состояний)
-
             //инициализация объектов (состояний)
             for (int i = 0; i < numberOfState; i++)
            {
-               textcol[i] = new FiniteStateMachine(numberOfCommand, visualState(i));
-
-               ConversionTableDataGrid.Columns.Add(textcol[i].nameOfColumn);//Создание колонки для данного состояния с именем "nameOfColumn"
-
-               /*возможно  необходимо вывести DataContext в другую функцию, чтобы каждый раз обновлять отображение DataGrid*/
-               ConversionTableDataGrid.DataContext = textcol[i].conversion;//Отображение "таблицы переходов"
-               ConversionTableDataGrid.ItemsSource = textcol[i].conversion;
+                textcol.Add(new FiniteStateMachine(numberOfCommand, visualState(i)));
+                               
+                MyGV.Columns.Add(textcol[i].nameOfColumn);//Создание колонки для данного состояния с именем "nameOfColumn"
+                
            }
 
+            for (int i = 0; i < numberOfState; i++)
+            {
+                MyLV.ItemsSource = textcol[i].listState;
+            }
             
+
             /*визуализация сотояния и команды для строки заполнения таблицы переходов */
-                Command.Text = Convert.ToString(command + 1);
+            Command.Text = Convert.ToString(command + 1);
             State.Text = visualState(state);
         }
 

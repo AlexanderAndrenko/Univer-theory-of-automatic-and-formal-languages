@@ -14,9 +14,9 @@ namespace Translator.Models
     public class FiniteStateMachine
     {
         public string[] conversion;//массив отобажающий таблицу перехода для конкретного состояния
-        public DataGridTextColumn nameOfColumn;//объект для создания колонки
+        public GridViewColumn nameOfColumn;//объект для создания колонки
         public Binding dataColumn;//объект для привязки данных
-
+        public List<TableOfConversion> listState = new List<TableOfConversion>();
 
         /*Конструктор класса*/
         public FiniteStateMachine(int command, string name)
@@ -26,13 +26,26 @@ namespace Translator.Models
             {
                 this.conversion[i] = Convert.ToString(i + 1);
             }
-            this.nameOfColumn = new DataGridTextColumn();
-            this.dataColumn = new Binding(Convert.ToString(conversion));//Привязка массива к объекту типа Binding 
-            this.nameOfColumn.Binding = dataColumn;//Привязка данных к объекту колонки
+            for (int i = 0; i < this.conversion.Length; i++)
+            {
+                this.listState.Add(new TableOfConversion(this.conversion[i]));
+            }
+
+            this.nameOfColumn = new GridViewColumn();
+            this.dataColumn = new Binding(Convert.ToString(listState[0]));//Привязка массива к объекту типа Binding 
+            this.nameOfColumn.DisplayMemberBinding = dataColumn;//Привязка данных к объекту колонки
+            this.nameOfColumn.Width = 30;
             this.nameOfColumn.Header = Convert.ToString(name);//Привязка названия колонки
+        }        
 
+        public class TableOfConversion
+        {
+            public string nextState;
+            public TableOfConversion(string next)
+            {
+                nextState = next;
+            }
         }
-
         
         /*?????*/
         public void setConversion(int index, char nextState)

@@ -43,11 +43,10 @@
 
         </DataGrid>
         <TextBlock Grid.Row="1" Grid.Column="1" Name="check"/>
-        
 
-        <ListView Grid.Row="1" Grid.Column="1">
+        <ListView x:Name="MyLV" Grid.Row="1" Grid.Column="1">
             <ListView.View>
-                <GridView>
+                <GridView >
                     
                 </GridView>
             </ListView.View>
