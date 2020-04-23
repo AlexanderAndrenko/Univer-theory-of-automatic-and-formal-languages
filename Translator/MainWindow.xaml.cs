@@ -29,6 +29,7 @@ namespace Translator
         int state = 0;//Отражает состояние для которого задаётся таблица перехода
         int command = 0;//Отражает комануд для которого задаётся таблица перехода
 
+       // List<FiniteStateMachine> textcol = new List<FiniteStateMachine>();
         FiniteStateMachine[] textcol;
 
         public MainWindow()
@@ -63,27 +64,17 @@ namespace Translator
             textcol = new FiniteStateMachine[numberOfState];//объявление массива объектов (состояний)
 
             //инициализация объектов (состояний)
-            /*for (int i = 0; i < numberOfState; i++)
+            for (int i = 0; i < numberOfState; i++)
            {
                textcol[i] = new FiniteStateMachine(numberOfCommand, visualState(i));
 
                ConversionTableDataGrid.Columns.Add(textcol[i].nameOfColumn);//Создание колонки для данного состояния с именем "nameOfColumn"
 
-               /*возможно  необходимо вывести DataContext в другую функцию, чтобы каждый раз обновлять отображение DataGrid
-               //ConversionTableDataGrid.DataContext = textcol[i].conversion;//Отображение "таблицы переходов"
+               /*возможно  необходимо вывести DataContext в другую функцию, чтобы каждый раз обновлять отображение DataGrid*/
+               ConversionTableDataGrid.DataContext = textcol[i].conversion;//Отображение "таблицы переходов"
                ConversionTableDataGrid.ItemsSource = textcol[i].conversion;
-           }*/
+           }
 
-            for (int i = 0; i < numberOfState; i++)
-            {
-                textcol[i] = new FiniteStateMachine(numberOfCommand, visualState(i));
-
-                gvDataTable.ColumnHeaderContextMenu.Items.Add(textcol[i].nameOfColumn);//Создание колонки для данного состояния с именем "nameOfColumn"
-
-                /*возможно  необходимо вывести DataContext в другую функцию, чтобы каждый раз обновлять отображение DataGrid*/
-                //ConversionTableDataGrid.DataContext = textcol[i].conversion;//Отображение "таблицы переходов"
-                gvDataTable.Columns.Add(textcol[i].conversion);
-            }
             
             /*визуализация сотояния и команды для строки заполнения таблицы переходов */
                 Command.Text = Convert.ToString(command + 1);

@@ -42,13 +42,16 @@
         <DataGrid Grid.Row="2" Name="ConversionTableDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="True" ColumnWidth="25" RowHeaderWidth="20" SelectionMode="Single" DataContextChanged="ConversionTableDataGrid_DataContextChanged"  >
 
         </DataGrid>
-        <!--<TextBlock Grid.Row="1" Grid.Column="1" Name="check"/>-->
+        <TextBlock Grid.Row="1" Grid.Column="1" Name="check"/>
+        
+
         <ListView Grid.Row="1" Grid.Column="1">
             <ListView.View>
-                <GridView x:Name="gvDataTable">
-                
+                <GridView>
+                    
                 </GridView>
             </ListView.View>
         </ListView>
+
     </Grid>
 </Window>
