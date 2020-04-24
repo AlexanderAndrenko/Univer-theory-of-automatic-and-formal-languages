@@ -25,15 +25,22 @@ namespace Translator
     
     public partial class MainWindow : Window
     {
+        #region Declaration
+
         bool isCreated = false;//Переменная состояния - созданы ли объекты представляющие конечный автомат
         //bool isClick = false;
         int state = 0;//Отражает состояние для которого задаётся таблица перехода
         int command = 0;//Отражает комануд для которого задаётся таблица перехода
-        private string[][] finiteMachine = null;
+
+        #endregion //Declaration
+
+        #region Constructor
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
+
+        #endregion //Constructor
 
         /*Функция обработки нажатия на кнопку SetSymbolOfAlphabet*/
         private void SetSymbolOfAlphabet_Click(object sender, RoutedEventArgs e)
@@ -41,20 +48,19 @@ namespace Translator
             if (!isCreated)
             {
                 createObjectsForTable();
-                dataGrid2D.DataContext = this;
             }
 
             isCreated = true;
         }
 
-        public int[][] Int2DJaggedArray { get; set; }
+
+        public void updateData()
+        {
+            dataGrid2D.DataContext = this;
+        }
 
         /*Функция обработки нажатия на кнопку SetConversionTable*/
-        private void SetConversionTable_Click(object sender, RoutedEventArgs e)
-        {
-            // isClick = true;
-
-        }
+        
 
         /*Функция создаёт объекты отображающие внутренее представление детерминированого конечного автомата (один объект - одно состояние*/
         public void createObjectsForTable()
@@ -62,16 +68,28 @@ namespace Translator
             int numberOfState = int.Parse(SymbolOfState.Text);//Определяет количество состояний
             int numberOfCommand = int.Parse(TerminalSymbol.Text);//Определяет количество возможных команд
 
-            finiteMachine = new string[numberOfState][];
+            finiteMachine = new ObservableCollection<ObservableCollection<string>>();
 
             for (int i = 0; i < numberOfState; i++)
             {
-                finiteMachine[i] = new string[numberOfCommand];
+                finiteMachine.Add(new ObservableCollection<string>());
+
+                for (int j = 0; j < numberOfCommand; j++)
+                {
+                    finiteMachine[i].Add((visualState(i)).ToString());
+                }
+
             }
+
+            updateData();
+
+            dataGrid2D.ColumnFromDisplayIndex(2);
+
             /*визуализация сотояния и команды для строки заполнения таблицы переходов */
             Command.Text = Convert.ToString(command + 1);
             State.Text = visualState(state);
         }
+        public ObservableCollection<ObservableCollection<string>> finiteMachine { get; set; }
 
         /*функция конвертации номера состояния в строку
          (проверить надо ли вообще?)
@@ -83,31 +101,24 @@ namespace Translator
             return result;
         }
 
-        private void ConversionTableDataGrid_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        #region EventsHandlers
+        private void SetConversionTable_Click(object sender, RoutedEventArgs e)
         {
-            int index = ConversionTableDataGrid.SelectedIndex;
-            check.Text = Convert.ToString(index);
+            // isClick = true;
+
         }
+
+        private void propertiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 1)
+            {
+                ListBoxItem listBoxItem = e.AddedItems[0] as ListBoxItem;
+                Binding datagrid2dBinding = new Binding();
+                datagrid2dBinding.Path = new PropertyPath(listBoxItem.Content.ToString());
+                dataGrid2D.SetBinding(DataGrid2D.ItemsSource2DProperty, datagrid2dBinding);
+            }
+        }
+
+        #endregion //EventsHandlers
     }
 }
-
-
-
-
-//while (true)
-//{
-//    if (isClick)
-//    {
-//        isClick = false;
-
-//        command++;
-//        Command.Text = Convert.ToString(command + 1);
-//        if (command > textcol[state].conversion.Length)
-//        {
-//            state++;
-//            State.Text = visualCommand(state);
-//        }                    
-
-//        textcol[state].conversion[command] = NextState.Text;
-//    }
-//}

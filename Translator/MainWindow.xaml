@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
+        xmlns:dg2d="clr-namespace:DataGrid2DLibrary;assembly=DataGrid2DLibrary"
         xmlns:local="clr-namespace:Translator"
         mc:Ignorable="d"
         Title="Finite-state machine" Height="450" Width="800" >
@@ -39,18 +40,23 @@
                 <Button Name="SetConversionTable" Margin="5,0,0,0" Height="25" Width="25" Click="SetConversionTable_Click">Ok</Button>
             </StackPanel>
         </StackPanel>
-        <DataGrid Grid.Row="2" Name="ConversionTableDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="True" ColumnWidth="25" RowHeaderWidth="20" SelectionMode="Single" DataContextChanged="ConversionTableDataGrid_DataContextChanged"  >
 
-        </DataGrid>
-        <TextBlock Grid.Row="1" Grid.Column="1" Name="check"/>
-
-        <ListView x:Name="MyLV" Grid.Row="1" Grid.Column="1">
-            <ListView.View>
-                <GridView >
-                    
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <dg2d:DataGrid2D Name="dataGrid2D"
+                             Grid.Row="2" Grid.Column="0"
+                             Margin="5,0,5,5"
+                             AlternationCount="2"
+                             UseModifiedDataGridStyle="True"
+                             ItemsSource2D="{Binding finiteMachine}"
+                             RowBackground="White"
+                             AlternatingRowBackground="#ebebeb"                       
+                             Background="Transparent">
+        </dg2d:DataGrid2D>
+        <ListBox Name="propertiesListBox"
+                 Visibility="Hidden"
+                 SelectedItem="0"
+                 SelectionChanged="propertiesListBox_SelectionChanged">
+            <ListBoxItem>finiteMachine</ListBoxItem>
+        </ListBox>
 
     </Grid>
 </Window>
