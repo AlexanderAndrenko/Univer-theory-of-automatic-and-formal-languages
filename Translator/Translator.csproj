@@ -35,8 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataGrid2DLibrary">
-      <HintPath>..\DataGrid2DLibrary.dll</HintPath>
+    <Reference Include="DataGrid2DLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DataGrid2DLibrary\bin\Debug\DataGrid2DLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

@@ -28,9 +28,7 @@ namespace Translator
         #region Declaration
 
         bool isCreated = false;//Переменная состояния - созданы ли объекты представляющие конечный автомат
-        //bool isClick = false;
-        int state = 0;//Отражает состояние для которого задаётся таблица перехода
-        int command = 0;//Отражает комануд для которого задаётся таблица перехода
+        
 
         #endregion //Declaration
 
@@ -83,20 +81,24 @@ namespace Translator
 
             updateData();
 
-            dataGrid2D.ColumnFromDisplayIndex(2);
 
-            /*визуализация сотояния и команды для строки заполнения таблицы переходов */
+            /*визуализация сотояния и команды для строки заполнения таблицы переходов 
             Command.Text = Convert.ToString(command + 1);
-            State.Text = visualState(state);
+            State.Text = visualState(state);*/
         }
         public ObservableCollection<ObservableCollection<string>> finiteMachine { get; set; }
 
-        /*функция конвертации номера состояния в строку
-         (проверить надо ли вообще?)
-         */
+        /*функция конвертации номера состояния в строку*/
         public string visualState(int valueOfCommand)
         {
             string result = Convert.ToString(Convert.ToChar(valueOfCommand + 97));
+
+            return result;
+        }
+
+        public int convertToNumber(char letter)
+        {
+            int result = Convert.ToInt32(letter) - 97; ;
 
             return result;
         }
@@ -119,6 +121,51 @@ namespace Translator
             }
         }
 
+        private void showWorkProcess(string previous, string next, int command)
+        {
+            string result = previous + " -> " + Convert.ToString(command) + " -> " + next;
+            workProcess.ItemsSource = result;
+        }
+
         #endregion //EventsHandlers
+
+        private void setChainOfCommand_Click(object sender, RoutedEventArgs e)
+        {
+            string chain = chainOfcommand.Text;
+
+            int state = 0;
+            int command = 0;
+            int finalState = finiteMachine.Count - 1;
+
+            for (int numberOfChain = 0; numberOfChain < chain.Length; numberOfChain++)
+            {
+                command = chain[numberOfChain];
+
+                if (command < finiteMachine[state].Count)
+                {
+                    if (convertToNumber(Convert.ToChar(finiteMachine[state][command])) == finalState)
+                    {
+                        workProcess.ItemsSource = "автомат достиг финального состояния!";
+                        workProcess.ItemsSource = "Работа окончена.";
+                    }
+                    else if (finiteMachine[state][command] != "")
+                    {
+                        showWorkProcess(visualState(state), finiteMachine[state][command], command);
+                        state = convertToNumber(Convert.ToChar(finiteMachine[state][command]));
+                    }
+                    
+                }
+                else
+                {
+                    workProcess.ItemsSource = "Команда отсутствует "
+                }
+
+
+                for (int findNextState = 0; findNextState < finiteMachine[state].Count; findNextState++)
+                {
+                    
+                }
+            }
+        }
     }
 }

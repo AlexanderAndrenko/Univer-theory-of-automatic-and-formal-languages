@@ -58,5 +58,18 @@
             <ListBoxItem>finiteMachine</ListBoxItem>
         </ListBox>
 
+        <StackPanel  Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical">
+            <TextBlock HorizontalAlignment="Center">Введите цепочку символов входного алфавита</TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBox x:Name="chainOfcommand" Margin="5,0,5,0" Width="300" HorizontalAlignment="Left"></TextBox>
+                <Button Name="setChainOfCommand" Margin="5,0,0,0" Height="25" Width="25" Click="setChainOfCommand_Click">Ok</Button>
+            </StackPanel>
+            <DataGrid x:Name="workProcess" AutoGenerateColumns="False" Margin="5,5,5,0" Width="250" HorizontalAlignment="Left">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Рабочий процесс" Width="250" Binding="{Binding}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            
+        </StackPanel>
     </Grid>
 </Window>
