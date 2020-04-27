@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-using Translator.Models;
 using DataGrid2DLibrary;
 
 namespace Translator
@@ -22,13 +21,12 @@ namespace Translator
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    
+
     public partial class MainWindow : Window
     {
         #region Declaration
 
         bool isCreated = false;//Переменная состояния - созданы ли объекты представляющие конечный автомат
-        
 
         #endregion //Declaration
 
@@ -39,26 +37,29 @@ namespace Translator
         }
 
         #endregion //Constructor
+        
+        public ObservableCollection<ObservableCollection<string>> finiteMachine {get;set;}
+        public ObservableCollection<string> lineOfWorkProcess { get; set; }
 
-        /*Функция обработки нажатия на кнопку SetSymbolOfAlphabet*/
-        private void SetSymbolOfAlphabet_Click(object sender, RoutedEventArgs e)
+        /*функция конвертации номера состояния в строку*/
+        public string visualState(int valueOfCommand)
         {
-            if (!isCreated)
-            {
-                createObjectsForTable();
-            }
+            string result = Convert.ToString(Convert.ToChar(valueOfCommand + 97));
 
-            isCreated = true;
+            return result;
         }
 
+        public int convertToNumber(char letter)
+        {
+            int result = Convert.ToInt32(letter) - 97; ;
+
+            return result;
+        }
 
         public void updateData()
         {
             dataGrid2D.DataContext = this;
         }
-
-        /*Функция обработки нажатия на кнопку SetConversionTable*/
-        
 
         /*Функция создаёт объекты отображающие внутренее представление детерминированого конечного автомата (один объект - одно состояние*/
         public void createObjectsForTable()
@@ -80,34 +81,19 @@ namespace Translator
             }
 
             updateData();
-
-
-            /*визуализация сотояния и команды для строки заполнения таблицы переходов 
-            Command.Text = Convert.ToString(command + 1);
-            State.Text = visualState(state);*/
-        }
-        public ObservableCollection<ObservableCollection<string>> finiteMachine { get; set; }
-
-        /*функция конвертации номера состояния в строку*/
-        public string visualState(int valueOfCommand)
-        {
-            string result = Convert.ToString(Convert.ToChar(valueOfCommand + 97));
-
-            return result;
-        }
-
-        public int convertToNumber(char letter)
-        {
-            int result = Convert.ToInt32(letter) - 97; ;
-
-            return result;
         }
 
         #region EventsHandlers
-        private void SetConversionTable_Click(object sender, RoutedEventArgs e)
-        {
-            // isClick = true;
 
+        /*Функция обработки нажатия на кнопку SetSymbolOfAlphabet*/
+        private void SetSymbolOfAlphabet_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isCreated)
+            {
+                createObjectsForTable();
+            }
+
+            isCreated = true;
         }
 
         private void propertiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -121,51 +107,65 @@ namespace Translator
             }
         }
 
-        private void showWorkProcess(string previous, string next, int command)
+        public string showWorkProcess(string previous, string next, int command)
         {
             string result = previous + " -> " + Convert.ToString(command) + " -> " + next;
-            workProcess.ItemsSource = result;
+
+            return result;
         }
-
-        #endregion //EventsHandlers
-
+        
         private void setChainOfCommand_Click(object sender, RoutedEventArgs e)
         {
+            lineOfWorkProcess = new ObservableCollection<string>();
+            workProcess.ItemsSource = lineOfWorkProcess;
+
             string chain = chainOfcommand.Text;
 
             int state = 0;
             int command = 0;
-            int finalState = finiteMachine.Count - 1;
+            int finalState = finiteMachine[state].Count - 1;
 
             for (int numberOfChain = 0; numberOfChain < chain.Length; numberOfChain++)
             {
-                command = chain[numberOfChain];
+                command = Convert.ToInt32(chain[numberOfChain]) - 48;
 
-                if (command < finiteMachine[state].Count)
+                if (convertToNumber(Convert.ToChar(finiteMachine[command][state])) < finiteMachine[command].Count)//Проверка что след. состояние присутствует в алфавите
                 {
-                    if (convertToNumber(Convert.ToChar(finiteMachine[state][command])) == finalState)
+                    if (convertToNumber(Convert.ToChar(finiteMachine[command][state])) == finalState)
                     {
-                        workProcess.ItemsSource = "автомат достиг финального состояния!";
-                        workProcess.ItemsSource = "Работа окончена.";
+                        if (numberOfChain + 1 == chain.Length)
+                        {
+                            lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteMachine[command][state], command));
+                            lineOfWorkProcess.Add("Автомат достиг финального состояния!");
+                            lineOfWorkProcess.Add("Работа окончена.");
+                        }
+                        else
+                        {
+                            lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
+                            lineOfWorkProcess.Add("Цепочка команд не закончилась, но автомат достиг финального состояния!.");
+                            break;
+                        }
                     }
-                    else if (finiteMachine[state][command] != "")
+                    else if (finiteMachine[command][state] != "")
                     {
-                        showWorkProcess(visualState(state), finiteMachine[state][command], command);
-                        state = convertToNumber(Convert.ToChar(finiteMachine[state][command]));
+                        lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteMachine[command][state], command));
+                        state = convertToNumber(Convert.ToChar(finiteMachine[command][state]));
                     }
-                    
-                }
+                    else if (finiteMachine[command][state] == "")
+                    {
+                        lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
+                        lineOfWorkProcess.Add("Следующее состояние при команде " + command + " не определено.");
+                        break;
+                    }
+                }                
                 else
                 {
-                    workProcess.ItemsSource = "Команда отсутствует "
-                }
-
-
-                for (int findNextState = 0; findNextState < finiteMachine[state].Count; findNextState++)
-                {
-                    
+                    lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
+                    lineOfWorkProcess.Add("Состояние отсутствует в алфавите.");
+                    break;
                 }
             }
         }
+        #endregion //EventsHandlers
     }
 }

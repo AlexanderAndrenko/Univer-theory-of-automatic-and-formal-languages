@@ -6,7 +6,7 @@
         xmlns:dg2d="clr-namespace:DataGrid2DLibrary;assembly=DataGrid2DLibrary"
         xmlns:local="clr-namespace:Translator"
         mc:Ignorable="d"
-        Title="Finite-state machine" Height="450" Width="800" >
+        Title="Finite-state machine" Height="450" Width="1000" >
     <Grid Margin="4">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400"/>
@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="80"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="186,5,184,5" Width="414">Добро пожаловать в симулятор детерминированного конечного автомата</TextBlock>
@@ -30,7 +30,7 @@
                 <Button Name="SetSymbolOfAlphabet" Margin="30,0,0,0" Height="25" Width="25" Click="SetSymbolOfAlphabet_Click" >Ok</Button>
             </StackPanel>
             <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите таблицу переходов:"/>
-            <StackPanel Orientation="Horizontal">
+            <!--<StackPanel Orientation="Horizontal">
                 <TextBlock Text="Из состояния: " VerticalAlignment="Center"/>
                 <TextBlock Name="State" Width="25" Height="25" HorizontalAlignment="Center"/>
                 <TextBlock Text=" при команде: " VerticalAlignment="Center"/>
@@ -38,7 +38,7 @@
                 <TextBlock Text=" переход в состояние: " VerticalAlignment="Center"/>
                 <TextBox Width="25" Height="25" Name="NextState"/>
                 <Button Name="SetConversionTable" Margin="5,0,0,0" Height="25" Width="25" Click="SetConversionTable_Click">Ok</Button>
-            </StackPanel>
+            </StackPanel>-->
         </StackPanel>
 
         <dg2d:DataGrid2D Name="dataGrid2D"
@@ -64,9 +64,9 @@
                 <TextBox x:Name="chainOfcommand" Margin="5,0,5,0" Width="300" HorizontalAlignment="Left"></TextBox>
                 <Button Name="setChainOfCommand" Margin="5,0,0,0" Height="25" Width="25" Click="setChainOfCommand_Click">Ok</Button>
             </StackPanel>
-            <DataGrid x:Name="workProcess" AutoGenerateColumns="False" Margin="5,5,5,0" Width="250" HorizontalAlignment="Left">
+            <DataGrid x:Name="workProcess" AutoGenerateColumns="False" Margin="5,5,5,0" Width="550" HorizontalAlignment="Left" IsReadOnly="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Рабочий процесс" Width="250" Binding="{Binding}"/>
+                    <DataGridTextColumn Header="Рабочий процесс" Width="550" Binding="{Binding}"/>
                 </DataGrid.Columns>
             </DataGrid>
             
