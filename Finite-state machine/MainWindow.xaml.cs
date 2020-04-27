@@ -81,6 +81,9 @@ namespace Translator
             }
 
             updateData();
+
+            Start.Text = "Стартовое состояние: a";
+            Final.Text = "Финальное состояние: " + visualState(numberOfCommand - 1);
         }
 
         #region EventsHandlers
