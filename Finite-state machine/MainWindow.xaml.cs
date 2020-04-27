@@ -150,6 +150,12 @@ namespace Translator
                     {
                         lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteMachine[command][state], command));
                         state = convertToNumber(Convert.ToChar(finiteMachine[command][state]));
+
+                        if (numberOfChain +1 ==  chain.Length && state != finalState)
+                        {
+                            lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
+                            lineOfWorkProcess.Add("Не достигнуто финальное состояние");
+                        }
                     }
                     else if (finiteMachine[command][state] == "")
                     {
