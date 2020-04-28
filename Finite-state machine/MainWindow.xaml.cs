@@ -27,7 +27,7 @@ namespace Translator
         #region Declaration
 
         bool isCreated = false;//Переменная состояния - созданы ли объекты представляющие конечный автомат
-
+        int numberFinState = 1;
         #endregion //Declaration
 
         #region Constructor
@@ -66,6 +66,7 @@ namespace Translator
         {
             int numberOfState = int.Parse(SymbolOfState.Text);//Определяет количество состояний
             int numberOfCommand = int.Parse(TerminalSymbol.Text);//Определяет количество возможных команд
+            numberFinState = int.Parse(countFinalState.Text);//Определяет количество финальных состояний
 
             finiteMachine = new ObservableCollection<ObservableCollection<string>>();
 
@@ -82,8 +83,29 @@ namespace Translator
 
             updateData();
 
+            string senten = "Доступные символы: ";
+
+            for (int i = 0; i < finiteMachine[0].Count; i++)
+            {
+                if (i + 1 != finiteMachine[0].Count)
+                {
+                    senten += visualState(i) + ", ";
+                }
+                else
+                {
+                    senten += visualState(i) + ".";
+                }                
+            }
+
+            listSymbol.Text = senten;
             Start.Text = "Стартовое состояние: a";
-            Final.Text = "Финальное состояние: " + visualState(numberOfCommand - 1);
+            Final.Text = "Финальное состояние: ";
+            for (int i = numberOfCommand; i > numberOfCommand - numberFinState; i--)
+            {
+               Final.Text += visualState(i - 1) + ", ";
+            }
+                
+            transition.Visibility = Visibility;
         }
 
         #region EventsHandlers
@@ -117,6 +139,27 @@ namespace Translator
             return result;
         }
         
+        public bool checkFinalState(string letterOfState, int numberOfState)
+        {
+            string[] finalStateArr = new string [numberFinState];
+            int numberOfLetter = numberOfState - numberFinState;
+
+            for (int i = 0; i < finalStateArr.Length; i++)
+            {                
+                finalStateArr[i] = visualState(numberOfState - i);
+            }
+
+            for (int i = 0; i < finalStateArr.Length; i++)
+            {
+                if (finalStateArr[i] == letterOfState)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void setChainOfCommand_Click(object sender, RoutedEventArgs e)
         {
             lineOfWorkProcess = new ObservableCollection<string>();
@@ -132,9 +175,9 @@ namespace Translator
             {
                 command = Convert.ToInt32(chain[numberOfChain]) - 48;
 
-                if (convertToNumber(Convert.ToChar(finiteMachine[command][state])) < finiteMachine[command].Count)//Проверка что след. состояние присутствует в алфавите
+                if ((finiteMachine[command][state] != "") && convertToNumber(Convert.ToChar(finiteMachine[command][state])) < finiteMachine[command].Count)//Проверка что след. состояние присутствует в алфавите
                 {
-                    if (convertToNumber(Convert.ToChar(finiteMachine[command][state])) == finalState)
+                    if (checkFinalState(finiteMachine[command][state], finalState))
                     {
                         if (numberOfChain + 1 == chain.Length)
                         {
@@ -144,9 +187,9 @@ namespace Translator
                         }
                         else
                         {
-                            lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
-                            lineOfWorkProcess.Add("Цепочка команд не закончилась, но автомат достиг финального состояния!.");
-                            break;
+                            lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteMachine[command][state], command));
+                            lineOfWorkProcess.Add("Автомат достиг финального состояния!");
+                            state = convertToNumber(Convert.ToChar(finiteMachine[command][state]));
                         }
                     }
                     else if (finiteMachine[command][state] != "")
@@ -154,20 +197,20 @@ namespace Translator
                         lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteMachine[command][state], command));
                         state = convertToNumber(Convert.ToChar(finiteMachine[command][state]));
 
-                        if (numberOfChain +1 ==  chain.Length && state != finalState)
+                        if (numberOfChain + 1 == chain.Length && state != finalState)
                         {
                             lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
                             lineOfWorkProcess.Add("Не достигнуто финальное состояние");
                         }
                     }
-                    else if (finiteMachine[command][state] == "")
-                    {
-                        lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
-                        lineOfWorkProcess.Add("Следующее состояние при команде " + command + " не определено.");
-                        break;
-                    }
-                }                
-                else
+                }
+                else if (finiteMachine[command][state] == "")
+                {
+                    lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
+                    lineOfWorkProcess.Add("Следующее состояние при команде " + command + " не определено.");
+                    break;
+                }
+                else 
                 {
                     lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
                     lineOfWorkProcess.Add("Состояние отсутствует в алфавите.");
