@@ -40,7 +40,7 @@ namespace Translator
         
         public ObservableCollection<ObservableCollection<string>> finiteMachine {get;set;}
         public ObservableCollection<string> lineOfWorkProcess { get; set; }
-
+        
         /*функция конвертации номера состояния в строку*/
         public string visualState(int valueOfCommand)
         {

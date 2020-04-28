@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGrid2DLibrary", "..\DataGrid2DTest\DataGrid2DLibrary\DataGrid2DLibrary.csproj", "{7D76D9E7-AF25-4AA5-995B-E1A526F192EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finite-state machine (abstract)", "Finite-state machine\Finite-state machine (abstract).csproj", "{7455BE4E-BED8-424A-854C-68E99FE9A21C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "imitation of work finite-state machine (abstract 2 lab)", "imitation of work finite-state machine\imitation of work finite-state machine (abstract 2 lab).csproj", "{7455BE4E-BED8-424A-854C-68E99FE9A21C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finite-state machine", "finite-state machine\finite-state machine.csproj", "{D231A336-2036-4A3E-AAB5-8107F7212B17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7455BE4E-BED8-424A-854C-68E99FE9A21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7455BE4E-BED8-424A-854C-68E99FE9A21C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7455BE4E-BED8-424A-854C-68E99FE9A21C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D231A336-2036-4A3E-AAB5-8107F7212B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D231A336-2036-4A3E-AAB5-8107F7212B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D231A336-2036-4A3E-AAB5-8107F7212B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D231A336-2036-4A3E-AAB5-8107F7212B17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
