@@ -18,3 +18,7 @@ F:\Документы Александр\Универ СибГУ\Трансля�
 F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\imitation of work finite-state machine (abstract 2 lab).csproj.CopyComplete
 F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Translator.exe
 F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Translator.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Lab2.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Lab3.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Lab2.baml
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Lab3.baml

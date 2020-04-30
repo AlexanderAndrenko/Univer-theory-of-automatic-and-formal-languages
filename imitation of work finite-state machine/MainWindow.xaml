@@ -9,63 +9,17 @@
         Title="Finite-state machine" Height="450" Width="1000" >
     <Grid Margin="4">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="11"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="180"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="186,5,184,5" Width="414">Добро пожаловать в симулятор детерминированного конечного автомата</TextBlock>
-        <StackPanel Grid.Row="1" Orientation="Vertical">
-            <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Определите количество символов алфавитов:"/>
-            <StackPanel Orientation="Horizontal">
-                <Image Grid.Row="1" Source="images/first.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
-                <TextBlock Text=" : " FontSize="16"/>
-                <TextBox Name="TerminalSymbol" Width="25" Height="25" ></TextBox>
-                <Image Grid.Row="1" Source="images/second.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
-                <TextBlock Text=" : " FontSize="16"/>
-                <TextBox Name="SymbolOfState" Width="25" Height="25" ></TextBox>
-                <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">Количество финальных состояний: </TextBlock>
-                <TextBox x:Name="countFinalState" Width="25" Height="25" Margin="5,0,0,0"></TextBox>
-                <Button Name="SetSymbolOfAlphabet" Margin="10,0,0,0" Height="25" Width="25" Click="SetSymbolOfAlphabet_Click" >Ok</Button>
-            </StackPanel>
-            <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите таблицу переходов:"/>
-            <TextBlock Grid.Row="1" Name="listSymbol" Width="auto" Height="25"></TextBlock>
-            <TextBlock Grid.Row="1" Name="Start" Width="auto" Height="25"></TextBlock>
-            <TextBlock Grid.Row="1" Name="Final"  Width="auto" Height="25"></TextBlock>
-            <TextBlock x:Name="transition" Visibility="Hidden">Отсутсвие перехода обозначается пустой ячейкой</TextBlock>
+        <StackPanel x:Name="MainStackPanel" Background="{Binding}" Grid.Column="0" Orientation="Vertical" >
+            <Button x:Name="Laboratory2" Content="Лабораторная 2" Height="25" FontSize="14" Click="Laboratory2_Click" />
+            <Button x:Name="Laboratory3" Content="Лабораторная 3" Height="25" FontSize="14" Margin="0,5,0,0" Click="Laboratory3_Click" />
         </StackPanel>
 
-        <dg2d:DataGrid2D Name="dataGrid2D"
-                             Grid.Row="2" Grid.Column="0"
-                             Margin="5,0,5,5"
-                             AlternationCount="2"
-                             UseModifiedDataGridStyle="True"
-                             ItemsSource2D="{Binding finiteMachine}"
-                             RowBackground="White"
-                             AlternatingRowBackground="#ebebeb"                       
-                             Background="Transparent">
-        </dg2d:DataGrid2D>
-        <ListBox Name="propertiesListBox"
-                 Visibility="Hidden"
-                 SelectedItem="0"
-                 SelectionChanged="propertiesListBox_SelectionChanged">
-            <ListBoxItem>finiteMachine</ListBoxItem>
-        </ListBox>
+        <Rectangle Grid.Column="1" Fill="Black" Margin="5,0,5,0" Width="1"/>
 
-        <StackPanel  Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical">
-            <TextBlock HorizontalAlignment="Center">Введите цепочку символов входного алфавита</TextBlock>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBox x:Name="chainOfcommand" Margin="5,0,5,0" Width="300" HorizontalAlignment="Left"></TextBox>
-                <Button Name="setChainOfCommand" Margin="5,0,0,0" Height="25" Width="25" Click="setChainOfCommand_Click">Ok</Button>
-            </StackPanel>
-            <DataGrid x:Name="workProcess" AutoGenerateColumns="False" Margin="5,5,5,0" Width="550" HorizontalAlignment="Left" IsReadOnly="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Рабочий процесс" Width="550" Binding="{Binding}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+        <Frame Grid.Column="2" x:Name="MainFrame" NavigationUIVisibility="Hidden"></Frame>
     </Grid>
 </Window>
