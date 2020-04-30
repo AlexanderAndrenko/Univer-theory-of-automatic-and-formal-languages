@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using DataGrid2DLibrary;
+using Translator;
+using finite_state_machine;
 
 namespace Translator
 {
@@ -28,6 +30,7 @@ namespace Translator
 
         bool isCreated = false;//Переменная состояния - созданы ли объекты представляющие конечный автомат
         int numberFinState = 1;
+        FiniteStateMachine fm;
         #endregion //Declaration
 
         #region Constructor
@@ -70,6 +73,8 @@ namespace Translator
 
             finiteMachine = new ObservableCollection<ObservableCollection<string>>();
 
+            FiniteStateMachine fm = new FiniteStateMachine(finiteMachine ,numberOfState, numberOfCommand);
+
             for (int i = 0; i < numberOfState; i++)
             {
                 finiteMachine.Add(new ObservableCollection<string>());
@@ -79,7 +84,7 @@ namespace Translator
                     finiteMachine[i].Add((visualState(i)).ToString());
                 }
 
-            }
+            }           
 
             updateData();
 
@@ -219,5 +224,10 @@ namespace Translator
             }
         }
         #endregion //EventsHandlers
+
+        private void checker2_Click(object sender, RoutedEventArgs e)
+        {
+            checker.Text = fm.finiteStateMachine[0][0];
+        }
     }
 }

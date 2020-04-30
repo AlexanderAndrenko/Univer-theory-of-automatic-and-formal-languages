@@ -1,0 +1,20 @@
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Debug\Translator.exe.config
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Debug\Translator.exe
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Debug\Translator.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Debug\DataGrid2DLibrary.dll
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Debug\finite-state machine.dll
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Debug\finite-state machine.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Debug\DataGrid2DLibrary.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\imitation of work finite-state machine (abstract 2 lab).csprojAssemblyReference.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\MainWindow.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\App.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Translator_MarkupCompile.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Translator_MarkupCompile.lref
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\MainWindow.baml
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Translator.g.resources
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Translator.Properties.Resources.resources
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\imitation of work finite-state machine (abstract 2 lab).csproj.GenerateResource.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\imitation of work finite-state machine (abstract 2 lab).csproj.CoreCompileInputs.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\imitation of work finite-state machine (abstract 2 lab).csproj.CopyComplete
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Translator.exe
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Debug\Translator.pdb

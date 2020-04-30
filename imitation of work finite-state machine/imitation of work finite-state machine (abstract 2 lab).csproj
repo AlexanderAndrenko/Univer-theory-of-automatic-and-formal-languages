@@ -104,5 +104,11 @@
     <Resource Include="images\first.png" />
     <Resource Include="images\second.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\finite-state machine\finite-state machine.csproj">
+      <Project>{D231A336-2036-4A3E-AAB5-8107F7212B17}</Project>
+      <Name>finite-state machine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,9 +15,9 @@ namespace finite_state_machine
         #endregion //Daclaration
 
         #region Constructor
-        FiniteStateMachine(int numberOfState, int numberOfCommand)// конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
+        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int numberOfState, int numberOfCommand)// конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
         {
-            finiteStateMachine = new ObservableCollection<ObservableCollection<string>>();
+            ObservableCollection<ObservableCollection<string>> finiteStateMachine = ptr;
 
             for (int i = 0; i<numberOfState; i++)
             {
@@ -31,6 +31,17 @@ namespace finite_state_machine
         }
 
         #endregion //Constructor
+
+        #region Public method
+
+        public int CountQuantityState()
+        {
+            int quantityOfState = finiteStateMachine[0].Count;
+
+            return quantityOfState;
+        }
+
+        #endregion //Public method
 
         #region Private method
         private string visualState(int valueOfCommand)
