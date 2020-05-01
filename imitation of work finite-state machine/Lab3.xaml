@@ -4,13 +4,74 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Translator"
+      xmlns:dg2d="clr-namespace:DataGrid2DLibrary;assembly=DataGrid2DLibrary"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Lab3">
 
-    <Grid>
-        <StackPanel>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25">Page2</TextBlock>
+    <Grid Margin="4" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="180"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Width="auto">Программа построения недетерминированного конечно-автоматного распознавателя</TextBlock>
+            <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Width="auto">по заданной праволинейной автоматной грамматике</TextBlock>
         </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Определите количество символов алфавитов:"/>
+            <StackPanel Orientation="Horizontal">
+                <Image Grid.Row="1" Source="images/first.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                <TextBlock Text=" : " FontSize="16"/>
+                <TextBox Name="TerminalSymbol" Width="25" Height="25" ></TextBox>
+                <Image Grid.Row="1" Source="images/second.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                <TextBlock Text=" : " FontSize="16"/>
+                <TextBox Name="SymbolOfState" Width="25" Height="25" ></TextBox>
+                <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">Количество финальных состояний:</TextBlock>
+                <TextBox x:Name="countFinalState" Width="25" Height="25" Margin="5,0,0,0"></TextBox>
+                <Button Name="SetSymbolOfAlphabet" Margin="10,0,0,0" Height="25" Width="25" >Ok</Button>
+            </StackPanel>
+            <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите таблицу переходов:"/>
+            <TextBlock Grid.Row="1" Name="listSymbol" Width="auto" Height="25"></TextBlock>
+            <TextBlock Grid.Row="1" Name="Start" Width="auto" Height="25"></TextBlock>
+            <TextBlock Grid.Row="1" Name="Final"  Width="auto" Height="25"></TextBlock>
+            <TextBlock x:Name="transition" Visibility="Hidden">Отсутсвие перехода обозначается пустой ячейкой</TextBlock>
+        </StackPanel>
+
+        <dg2d:DataGrid2D Name="dataGrid2D"
+                             Grid.Row="2" Grid.Column="0"
+                             Margin="5,0,5,5"
+                             AlternationCount="2"
+                             UseModifiedDataGridStyle="True"
+                             ItemsSource2D="{Binding finiteMachine}"
+                             RowBackground="White"
+                             AlternatingRowBackground="#ebebeb"                       
+                             Background="Transparent">
+        </dg2d:DataGrid2D>
+        <ListBox Name="propertiesListBox"
+                 Visibility="Hidden"
+                 SelectedItem="0"
+                 SelectionChanged="propertiesListBox_SelectionChanged">
+            <ListBoxItem>finiteMachine</ListBoxItem>
+        </ListBox>
+
+        <StackPanel  Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical">
+            <TextBlock HorizontalAlignment="Center">Введите цепочку символов входного алфавита</TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBox x:Name="chainOfcommand" Margin="5,0,5,0" Width="300" HorizontalAlignment="Left"></TextBox>
+                <Button Name="setChainOfCommand" Margin="5,0,0,0" Height="25" Width="25">Ok</Button>
+            </StackPanel>
+            <DataGrid x:Name="workProcess" AutoGenerateColumns="False" Margin="5,5,5,0"  HorizontalAlignment="Left" IsReadOnly="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Рабочий процесс" Width="*" Binding="{Binding}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
     </Grid>
 </Page>

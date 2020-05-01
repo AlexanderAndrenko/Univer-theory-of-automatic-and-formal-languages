@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DataGrid2DLibrary;
 
 namespace Translator
 {
@@ -23,6 +24,17 @@ namespace Translator
         public Lab3()
         {
             InitializeComponent();
+        }
+
+        private void propertiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 1)
+            {
+                ListBoxItem listBoxItem = e.AddedItems[0] as ListBoxItem;
+                Binding datagrid2dBinding = new Binding();
+                datagrid2dBinding.Path = new PropertyPath(listBoxItem.Content.ToString());
+                dataGrid2D.SetBinding(DataGrid2D.ItemsSource2DProperty, datagrid2dBinding);
+            }
         }
     }
 }
