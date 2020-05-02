@@ -32,17 +32,15 @@
                 <Image Grid.Row="1" Source="images/nonterminal.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
                 <TextBlock Text=" : " FontSize="16"/>
                 <TextBox Name="SymbolOfState" Width="25" Height="25" ></TextBox>
-                <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">Количество финальных состояний:</TextBlock>
-                <TextBox x:Name="countFinalState" Width="25" Height="25" Margin="5,0,0,0"></TextBox>
                 <Button Name="SetSymbolOfAlphabet" Margin="10,0,0,0" Height="25" Width="25" Click="SetSymbolOfAlphabet_Click" >Ok</Button>
             </StackPanel>
-            <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите таблицу переходов:"/>
+            <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите правила переходов:"/>
             <TextBlock Grid.Row="1" Name="listSymbol" Width="auto" Height="25"></TextBlock>
             <TextBlock Grid.Row="1" Name="Start" Width="auto" Height="25"></TextBlock>
             <TextBlock Grid.Row="1" Name="Final"  Width="auto" Height="25"></TextBlock>
-            <TextBlock x:Name="transition" Visibility="Hidden" TextWrapping="Wrap"/>
-            <TextBlock x:Name="transition2" Visibility="Hidden"/>
-            <TextBlock x:Name="transition3" Visibility="Hidden"/>
+            <!--<TextBlock x:Name="transition" Visibility="Hidden" TextWrapping="Wrap"/>-->
+            <TextBox Width="70" Height="25" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+
         </StackPanel>
 
         <dg2d:DataGrid2D Name="dataGrid2D"
