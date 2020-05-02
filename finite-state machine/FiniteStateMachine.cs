@@ -16,15 +16,15 @@ namespace finite_state_machine
          * Пользователь может определить любой терминал*/
         public ObservableCollection<ObservableCollection<string>> finiteStateMachine;//Таблица переходов конечного автомата 
         private Stack<string> store;
-        public string finalState;
+        private int quantityFinalState;
 
         #endregion //Daclaration
 
         #region Constructor
-        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int numberOfState, int numberOfCommand)// конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
+        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int numberOfState, int numberOfCommand, int quantityFinState)// конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
         {
             ObservableCollection<ObservableCollection<string>> finiteStateMachine = ptr;
-            finalState = visualState(numberOfState);
+            quantityFinalState = quantityFinState;
 
             for (int i = 0; i < numberOfState; i++)
             {
@@ -55,30 +55,67 @@ namespace finite_state_machine
          * Только необходимо вместо цифр задавать какие-то буквы.
          * Осталось придумать как трансформировать прошлый код под новую задачу*/
 
-        public bool ParseWord(string parseWord)//Парсинг строки с праволинейной грамматикой. Парсить начинаем с конца
+        public bool ParseWord(string parseWord, ObservableCollection<string> lineOfWorkProcess, string chain)//Парсинг строки с праволинейной грамматикой. Парсить начинаем с конца
         {
-            bool result = false;
+            int state = 0;
+            int command = 0;
+            int finalState = CountQuantityState() - 1;
 
-            for (int i = 0; i < finiteStateMachine.Count; i++)
+            for (int numberOfChain = 0; numberOfChain < chain.Length; numberOfChain++)
             {
-                for (int j = 0; j < length; j++)
-                {
+                command = Convert.ToInt32(chain[numberOfChain]) - 48;
 
+                if ((finiteStateMachine[command][state] != "") && convertToNumber(finiteStateMachine[command][state]) < finiteStateMachine[command].Count)//Проверка что след. состояние присутствует в алфавите
+                {
+                    if (checkFinalState(finiteStateMachine[command][state]))
+                    {
+                        if (numberOfChain + 1 == chain.Length)
+                        {
+                            lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteStateMachine[command][state], command));
+                            lineOfWorkProcess.Add("Автомат достиг финального состояния!");
+                            lineOfWorkProcess.Add("Работа окончена.");
+                        }
+                        else
+                        {
+                            lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteStateMachine[command][state], command));
+                            lineOfWorkProcess.Add("Автомат достиг финального состояния!");
+                            state = convertToNumber(finiteStateMachine[command][state]);
+                        }
+                    }
+                    else if (finiteStateMachine[command][state] != "")
+                    {
+                        lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteStateMachine[command][state], command));
+                        state = convertToNumber(finiteStateMachine[command][state]);
+
+                        if (numberOfChain + 1 == chain.Length && state != finalState)
+                        {
+                            lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
+                            lineOfWorkProcess.Add("Не достигнуто финальное состояние");
+                        }
+                    }
+                }
+                else if (finiteStateMachine[command][state] == "")
+                {
+                    lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
+                    lineOfWorkProcess.Add("Следующее состояние при команде " + command + " не определено.");
+                    break;
+                }
+                else
+                {
+                    lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
+                    lineOfWorkProcess.Add("Состояние отсутствует в алфавите.");
+                    break;
                 }
             }
 
-            while(parseWord.Length > 0)
-            {
-               
-            }
-
-            return result;
+            return true;
         }
 
         #endregion //Public method
 
         #region Private method
 
+        #region For future maybe
         private void setStackElement(string parseWord)
         {
 
@@ -118,17 +155,46 @@ namespace finite_state_machine
             return rule;
         }
 
+        #endregion //For future maybe
+
+        private string showWorkProcess(string previous, string next, int command)
+        {
+            string result = previous + " -> " + Convert.ToString(command) + " -> " + next;
+
+            return result;
+        }
+
+        private bool checkFinalState(string letterOfState)
+        {
+            string[] finalStateArr = new string[quantityFinalState];
+            int numberOfLetter = CountQuantityState() - 1 - quantityFinalState;
+
+            for (int i = 0; i < finalStateArr.Length; i++)
+            {
+                finalStateArr[i] = visualState(CountQuantityState() - 1 - i);
+            }
+
+            for (int i = 0; i < finalStateArr.Length; i++)
+            {
+                if (finalStateArr[i] == letterOfState)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         private string visualState(int valueOfCommand)
         {
-            string result = Convert.ToString(Convert.ToChar(valueOfCommand + 97));
+            string result = Convert.ToString(Convert.ToChar(valueOfCommand + 65));
 
             return result;
         }
 
         private int convertToNumber(string letter)
         {
-            int result = Convert.ToInt32(Convert.ToChar(letter)) - 97; ;
+            int result = Convert.ToInt32(Convert.ToChar(letter)) - 65; ;
 
             return result;
         }

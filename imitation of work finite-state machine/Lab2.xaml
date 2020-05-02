@@ -23,10 +23,10 @@
         <StackPanel Grid.Row="1" Orientation="Vertical">
             <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Определите количество символов алфавитов:"/>
             <StackPanel Orientation="Horizontal">
-                <Image Grid.Row="1" Source="images/first.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                <Image Grid.Row="1" Source="images/terminal.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
                 <TextBlock Text=" : " FontSize="16"/>
                 <TextBox Name="TerminalSymbol" Width="25" Height="25" ></TextBox>
-                <Image Grid.Row="1" Source="images/second.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                <Image Grid.Row="1" Source="images/nonterminal.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
                 <TextBlock Text=" : " FontSize="16"/>
                 <TextBox Name="SymbolOfState" Width="25" Height="25" ></TextBox>
                 <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">Количество финальных состояний:</TextBlock>

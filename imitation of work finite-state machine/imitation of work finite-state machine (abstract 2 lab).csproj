@@ -69,6 +69,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="myConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -115,14 +116,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\first.png" />
-    <Resource Include="images\second.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\finite-state machine\finite-state machine.csproj">
       <Project>{D231A336-2036-4A3E-AAB5-8107F7212B17}</Project>
       <Name>finite-state machine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\nonterminal.png" />
+    <Resource Include="images\second.png" />
+    <Resource Include="images\terminal.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

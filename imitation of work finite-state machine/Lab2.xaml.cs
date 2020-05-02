@@ -69,18 +69,7 @@ namespace Translator
 
             finiteMachine = new ObservableCollection<ObservableCollection<string>>();
 
-            FiniteStateMachine fm = new FiniteStateMachine(finiteMachine, numberOfState, numberOfCommand);
-
-            /*for (int i = 0; i < numberOfState; i++)
-            {
-                finiteMachine.Add(new ObservableCollection<string>());
-
-                for (int j = 0; j < numberOfCommand; j++)
-                {
-                    finiteMachine[i].Add((visualState(i)).ToString());
-                }
-
-            }*/
+            FiniteStateMachine fm = new FiniteStateMachine(finiteMachine, numberOfState, numberOfCommand, numberFinState);
 
             updateData();
 
@@ -129,7 +118,7 @@ namespace Translator
                 ListBoxItem listBoxItem = e.AddedItems[0] as ListBoxItem;
                 Binding datagrid2dBinding = new Binding();
                 datagrid2dBinding.Path = new PropertyPath(listBoxItem.Content.ToString());
-                dataGrid2D.SetBinding(DataGrid2D.ItemsSource2DProperty, datagrid2dBinding);
+                dataGrid2D.SetBinding(DataGrid2D.ItemsSource2DProperty, datagrid2dBinding);               
             }
         }
 
