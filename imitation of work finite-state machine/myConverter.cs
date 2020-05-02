@@ -21,5 +21,28 @@ namespace Translator
 
             return result;
         }
+
+        public static bool checkExistSymbol(string symbol, int size, bool terminal)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                if (!terminal)
+                {
+                    if (symbol == visualState(i))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (symbol == visualState(i + 32))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }

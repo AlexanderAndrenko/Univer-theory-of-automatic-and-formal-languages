@@ -23,6 +23,7 @@ namespace Translator
     /// </summary>
     public partial class Lab3 : Page
     {
+        FiniteStateMachine fm;
         public Lab3()
         {
             InitializeComponent();
@@ -44,24 +45,57 @@ namespace Translator
 
         public void createObjectsForTable()
         {
-            int numberOfState = int.Parse(SymbolOfState.Text);//Определяет количество состояний
-            int numberOfCommand = int.Parse(TerminalSymbol.Text);//Определяет количество возможных команд
-            int numberFinState = int.Parse(countFinalState.Text);//Определяет количество финальных состояний
+            int nonterminalAlphabet = int.Parse(NonterminalSymbol.Text);//Определяет количество состояний
+            int terminalAlphabet = int.Parse(TerminalSymbol.Text);//Определяет количество возможных команд
+            //int numberFinState = int.Parse(countFinalState.Text);//Определяет количество финальных состояний
 
-            numberOfState++;
-            numberOfCommand++;
+            nonterminalAlphabet++;
+            terminalAlphabet++;
 
             finiteMachine = new ObservableCollection<ObservableCollection<string>>();
+            fm = new FiniteStateMachine(finiteMachine, nonterminalAlphabet, terminalAlphabet);
+            updateData();            
+        }
 
-            FiniteStateMachine fm = new FiniteStateMachine(finiteMachine, numberOfState, numberOfCommand, numberFinState);
+        private bool checkRule()
+        {
+            string rule = RuleTransition.Text;
 
-            updateData();
+            for (int index = 0; index < rule.Length; index++)
+            {
+                if (index != 1)
+                {
+                    if (!(myConverter.checkExistSymbol(Convert.ToString(rule[index]), finiteMachine[0].Count, false)))
+                    {
+                        ErrorMessage.Text = "Извините данного нетерминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
+                        return false;
+                    }                    
+                }
+                else if (index == 1)
+                {
+                    if (!(myConverter.checkExistSymbol(Convert.ToString(rule[index]), finiteMachine.Count, true)))
+                    {
+                        ErrorMessage.Text = "Извините данного терминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
+                        return false;
+                    }                    
+                }
+            }
 
+            return true;
+        }
+
+        public void updateData()
+        {
+            dataGrid2D.DataContext = this;
+        }
+
+        private void showHelp()
+        {
             string senten = "Доступные терминалы: ";
 
-            for (int i = 0; i < finiteMachine[0].Count - 1; i++)
+            for (int i = 0; i < finiteMachine.Count - 1; i++)
             {
-                if (i + 1 != finiteMachine[0].Count - 1)
+                if (i + 1 != finiteMachine.Count - 1)
                 {
                     senten += myConverter.visualState(i + 32) + ", ";
                 }
@@ -71,19 +105,24 @@ namespace Translator
                 }
             }
 
-            listSymbol.Text = senten;
+            listTerminal.Text = senten;
+
+            senten = "Доступные нетерминалы: ";
+
+            for (int i = 0; i < finiteMachine[0].Count - 1; i++)
+            {
+                if (i + 1 != finiteMachine[0].Count - 1)
+                {
+                    senten += myConverter.visualState(i) + ", ";
+                }
+                else
+                {
+                    senten += myConverter.visualState(i) + ".";
+                }
+            }
+
+            listNonterminal.Text = senten;
             Start.Text = "Стартовый нетерминал: A";
-            Final.Text = "Финальный нетерминал:  " + myConverter.visualState(numberOfState - 1) + " = t";
-
-            transition.Text = "Терминал " + myConverter.visualState(finiteMachine[0].Count - 1) + " объявляется пустой цепочкой. Нетерминалы берутся в <> скобки." + 
-                              " Отсутствие правила перехода обозначается пустой ячейкой" + 
-                              " Пример: правило А->aB и A->а, записывается текст <Bt> в пересечении колонки А и строки а.";
-            transition.Visibility = Visibility;
-        }
-
-        public void updateData()
-        {
-            dataGrid2D.DataContext = this;
         }
 
         #region Events Handler
@@ -94,12 +133,22 @@ namespace Translator
             workProcess.ItemsSource = lineOfWorkProcess;
         }
 
-
-        #endregion //Events Handler
-
         private void SetSymbolOfAlphabet_Click(object sender, RoutedEventArgs e)
         {
             createObjectsForTable();
+            showHelp();
         }
+
+        private void SetRuleTransition_Click(object sender, RoutedEventArgs e)
+        {
+            if (checkRule())
+            {
+                fm.ConvertRuleTransition(RuleTransition.Text);
+            }
+        }
+
+        #endregion //Events Handler
+
+
     }
 }

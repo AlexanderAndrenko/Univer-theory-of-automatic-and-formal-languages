@@ -31,16 +31,19 @@
                 <TextBox Name="TerminalSymbol" Width="25" Height="25" ></TextBox>
                 <Image Grid.Row="1" Source="images/nonterminal.png" Height="20" Margin="5,0,0,0" HorizontalAlignment="Left" />
                 <TextBlock Text=" : " FontSize="16"/>
-                <TextBox Name="SymbolOfState" Width="25" Height="25" ></TextBox>
+                <TextBox Name="NonterminalSymbol" Width="25" Height="25" ></TextBox>
                 <Button Name="SetSymbolOfAlphabet" Margin="10,0,0,0" Height="25" Width="25" Click="SetSymbolOfAlphabet_Click" >Ok</Button>
             </StackPanel>
             <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите правила переходов:"/>
-            <TextBlock Grid.Row="1" Name="listSymbol" Width="auto" Height="25"></TextBlock>
-            <TextBlock Grid.Row="1" Name="Start" Width="auto" Height="25"></TextBlock>
-            <TextBlock Grid.Row="1" Name="Final"  Width="auto" Height="25"></TextBlock>
+            <TextBlock Grid.Row="1" Name="listTerminal" Width="auto" Height="25"></TextBlock>
+            <TextBlock Grid.Row="1" Name="listNonterminal"  Width="auto" Height="25"></TextBlock>
+            <TextBlock Grid.Row="1" Name="Start" Width="auto" Height="25"></TextBlock>            
             <!--<TextBlock x:Name="transition" Visibility="Hidden" TextWrapping="Wrap"/>-->
-            <TextBox Width="70" Height="25" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="RuleTransition" Width="70" Height="25" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+                <Button Name="SetRuleTransition" Margin="10,0,0,0" Height="25" Width="25" Click="SetRuleTransition_Click" >Ok</Button>
+                <TextBlock x:Name="ErrorMessage" Margin="5,0,0,0" Width="auto" TextWrapping="Wrap"/>
+            </StackPanel>
         </StackPanel>
 
         <dg2d:DataGrid2D Name="dataGrid2D"

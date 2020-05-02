@@ -21,18 +21,33 @@ namespace finite_state_machine
         #endregion //Daclaration
 
         #region Constructor
-        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int numberOfState, int numberOfCommand, int quantityFinState)// конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
+        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int nonterminalAlphabet, int terminalAlphabet, int quantityFinState)// конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
         {
             ObservableCollection<ObservableCollection<string>> finiteStateMachine = ptr;
             quantityFinalState = quantityFinState;
 
-            for (int i = 0; i < numberOfState; i++)
+            for (int i = 0; i < nonterminalAlphabet; i++)
             {
                 finiteStateMachine.Add(new ObservableCollection<string>());
 
-                for (int j = 0; j < numberOfCommand; j++)
+                for (int j = 0; j < terminalAlphabet; j++)
                 {
-                    finiteStateMachine[i].Add((visualState(i)).ToString());
+                    finiteStateMachine[i].Add((convertNumberToString(i)).ToString());
+                }
+            }
+        }
+        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int nonterminalAlphabet, int terminalAlphabet)// конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
+        {
+            finiteStateMachine = ptr;
+            quantityFinalState = 1;
+
+            for (int i = 0; i < terminalAlphabet; i++)
+            {
+                finiteStateMachine.Add(new ObservableCollection<string>());//Добавляем терминалы
+
+                for (int j = 0; j < nonterminalAlphabet; j++)
+                {
+                    finiteStateMachine[i].Add((convertNumberToString(i)).ToString());//добавляем нетерминалы
                 }
             }
         }
@@ -41,15 +56,20 @@ namespace finite_state_machine
 
         #region Public method
 
-        public int CountQuantityState()
+        public int CountQuantityNonterminal()
         {
-            int quantityOfState = finiteStateMachine[0].Count;
+            int quantityOfNonterminal = finiteStateMachine[0].Count;
 
-            return quantityOfState;
+            return quantityOfNonterminal;
         }
 
-        //public int CountTerminalSymbol
+        public int CountQuantityTerminal()
+        {
+            int quantityOfTerminal = finiteStateMachine.Count;
 
+            return quantityOfTerminal;
+        }
+        
         /*Терминальные символы - это по сути тоже самое, что и команды из прошлой лабораторной работы.
          * Поэтому имитация работы конечного автомата по сути и есть парсер цепочки терминальных символов.
          * Только необходимо вместо цифр задавать какие-то буквы.
@@ -59,33 +79,33 @@ namespace finite_state_machine
         {
             int state = 0;
             int command = 0;
-            int finalState = CountQuantityState() - 1;
+            int finalState = CountQuantityNonterminal() - 1;
 
             for (int numberOfChain = 0; numberOfChain < chain.Length; numberOfChain++)
             {
                 command = Convert.ToInt32(chain[numberOfChain]) - 48;
 
-                if ((finiteStateMachine[command][state] != "") && convertToNumber(finiteStateMachine[command][state]) < finiteStateMachine[command].Count)//Проверка что след. состояние присутствует в алфавите
+                if ((finiteStateMachine[command][state] != "") && convertStringToNumber(finiteStateMachine[command][state]) < finiteStateMachine[command].Count)//Проверка что след. состояние присутствует в алфавите
                 {
                     if (checkFinalState(finiteStateMachine[command][state]))
                     {
                         if (numberOfChain + 1 == chain.Length)
                         {
-                            lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteStateMachine[command][state], command));
+                            lineOfWorkProcess.Add(showWorkProcess(convertNumberToString(state), finiteStateMachine[command][state], command));
                             lineOfWorkProcess.Add("Автомат достиг финального состояния!");
                             lineOfWorkProcess.Add("Работа окончена.");
                         }
                         else
                         {
-                            lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteStateMachine[command][state], command));
+                            lineOfWorkProcess.Add(showWorkProcess(convertNumberToString(state), finiteStateMachine[command][state], command));
                             lineOfWorkProcess.Add("Автомат достиг финального состояния!");
-                            state = convertToNumber(finiteStateMachine[command][state]);
+                            state = convertStringToNumber(finiteStateMachine[command][state]);
                         }
                     }
                     else if (finiteStateMachine[command][state] != "")
                     {
-                        lineOfWorkProcess.Add(showWorkProcess(visualState(state), finiteStateMachine[command][state], command));
-                        state = convertToNumber(finiteStateMachine[command][state]);
+                        lineOfWorkProcess.Add(showWorkProcess(convertNumberToString(state), finiteStateMachine[command][state], command));
+                        state = convertStringToNumber(finiteStateMachine[command][state]);
 
                         if (numberOfChain + 1 == chain.Length && state != finalState)
                         {
@@ -109,6 +129,32 @@ namespace finite_state_machine
             }
 
             return true;
+        }
+
+
+        public void ConvertRuleTransition(string rule)
+        {
+            int preNonterminal = convertStringToNumber(Convert.ToString(rule[0]));
+            int terminal;
+            if (!(rule[1] == 'E'))
+            {
+                terminal = convertStringToNumber(Convert.ToString(rule[1])) - 32;
+            }
+            else
+            {
+                terminal = CountQuantityTerminal() - 1;
+            }
+            
+
+            if (rule.Length == 2)
+            {
+                finiteStateMachine[terminal][preNonterminal] = convertNumberToString(CountQuantityNonterminal() - 1);
+            }
+            else
+            {
+                finiteStateMachine[terminal][preNonterminal] = rule.Substring(2);
+                //finiteStateMachine[terminal].Insert(preNonterminal, rule.Substring(2));
+            }            
         }
 
         #endregion //Public method
@@ -167,11 +213,11 @@ namespace finite_state_machine
         private bool checkFinalState(string letterOfState)
         {
             string[] finalStateArr = new string[quantityFinalState];
-            int numberOfLetter = CountQuantityState() - 1 - quantityFinalState;
+            int numberOfLetter = CountQuantityNonterminal() - 1 - quantityFinalState;
 
             for (int i = 0; i < finalStateArr.Length; i++)
             {
-                finalStateArr[i] = visualState(CountQuantityState() - 1 - i);
+                finalStateArr[i] = convertNumberToString(CountQuantityNonterminal() - 1 - i);
             }
 
             for (int i = 0; i < finalStateArr.Length; i++)
@@ -185,14 +231,14 @@ namespace finite_state_machine
             return false;
         }
 
-        private string visualState(int valueOfCommand)
+        private string convertNumberToString(int valueOfCommand)
         {
             string result = Convert.ToString(Convert.ToChar(valueOfCommand + 65));
 
             return result;
         }
 
-        private int convertToNumber(string letter)
+        private int convertStringToNumber(string letter)
         {
             int result = Convert.ToInt32(Convert.ToChar(letter)) - 65; ;
 
