@@ -42,7 +42,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBox x:Name="RuleTransition" Width="70" Height="25" HorizontalAlignment="Left" Margin="20,0,0,0"/>
                 <Button Name="SetRuleTransition" Margin="10,0,0,0" Height="25" Width="25" Click="SetRuleTransition_Click" >Ok</Button>
-                <TextBlock x:Name="ErrorMessage" Margin="5,0,0,0" Width="auto" TextWrapping="Wrap"/>
+                <TextBlock x:Name="ErrorMessage" Margin="5,0,0,0" Width="auto" TextWrapping="Wrap" Text="Правила грамматики: "/>
             </StackPanel>
         </StackPanel>
 

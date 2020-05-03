@@ -35,7 +35,7 @@ namespace Translator
                 }
                 else
                 {
-                    if (symbol == visualState(i + 32))
+                    if (symbol == visualState(i + 32) || symbol == "E")
                     {
                         return true;
                     }

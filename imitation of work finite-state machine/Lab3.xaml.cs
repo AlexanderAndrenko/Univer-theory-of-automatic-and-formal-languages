@@ -69,7 +69,7 @@ namespace Translator
                     {
                         ErrorMessage.Text = "Извините данного нетерминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
                         return false;
-                    }                    
+                    }
                 }
                 else if (index == 1)
                 {
@@ -77,7 +77,7 @@ namespace Translator
                     {
                         ErrorMessage.Text = "Извините данного терминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
                         return false;
-                    }                    
+                    }
                 }
             }
 
@@ -131,6 +131,11 @@ namespace Translator
         {
             lineOfWorkProcess = new ObservableCollection<string>();
             workProcess.ItemsSource = lineOfWorkProcess;
+            if (fm.ParseWord(chainOfcommand.Text, lineOfWorkProcess, chainOfcommand.Text))
+            {
+                lineOfWorkProcess.Add("Цепочка относится к заданной регулярной грамматике");
+            }
+            
         }
 
         private void SetSymbolOfAlphabet_Click(object sender, RoutedEventArgs e)
@@ -144,6 +149,7 @@ namespace Translator
             if (checkRule())
             {
                 fm.ConvertRuleTransition(RuleTransition.Text);
+                ErrorMessage.Text += "  " + RuleTransition.Text + "  ";
             }
         }
 
