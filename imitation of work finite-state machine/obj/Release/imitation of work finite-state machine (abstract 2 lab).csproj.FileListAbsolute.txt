@@ -1,0 +1,24 @@
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Release\Translator.exe.config
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Release\Translator.exe
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Release\Translator.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Release\DataGrid2DLibrary.dll
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Release\finite-state machine.dll
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Release\finite-state machine.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\bin\Release\DataGrid2DLibrary.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\imitation of work finite-state machine (abstract 2 lab).csprojAssemblyReference.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\MainWindow.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Lab2.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Lab3.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\App.g.cs
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Translator_MarkupCompile.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Translator_MarkupCompile.lref
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\MainWindow.baml
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Lab2.baml
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Lab3.baml
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Translator.g.resources
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Translator.Properties.Resources.resources
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\imitation of work finite-state machine (abstract 2 lab).csproj.GenerateResource.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\imitation of work finite-state machine (abstract 2 lab).csproj.CoreCompileInputs.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\imitation of work finite-state machine (abstract 2 lab).csproj.CopyComplete
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Translator.exe
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\imitation of work finite-state machine\obj\Release\Translator.pdb

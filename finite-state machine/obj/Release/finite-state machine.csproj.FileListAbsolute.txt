@@ -1,0 +1,6 @@
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\finite-state machine\bin\Release\finite-state machine.dll
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\finite-state machine\bin\Release\finite-state machine.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\finite-state machine\obj\Release\finite-state machine.csproj.CoreCompileInputs.cache
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\finite-state machine\obj\Release\finite-state machine.dll
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\finite-state machine\obj\Release\finite-state machine.pdb
+F:\Документы Александр\Универ СибГУ\Трансляторы\Univer-theory-of-automatic-and-formal-languages\finite-state machine\obj\Release\finite-state machine.csprojAssemblyReference.cache

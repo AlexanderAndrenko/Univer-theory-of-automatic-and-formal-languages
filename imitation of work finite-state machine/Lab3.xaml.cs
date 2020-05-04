@@ -24,6 +24,7 @@ namespace Translator
     public partial class Lab3 : Page
     {
         FiniteStateMachine fm;
+        string errormessage = "Правила грамматики: ";
         public Lab3()
         {
             InitializeComponent();
@@ -67,7 +68,7 @@ namespace Translator
                 {
                     if (!(myConverter.checkExistSymbol(Convert.ToString(rule[index]), finiteMachine[0].Count, false)))
                     {
-                        ErrorMessage.Text = "Извините данного нетерминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
+                        ErrorMessage.Text += "Извините данного нетерминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
                         return false;
                     }
                 }
@@ -75,7 +76,7 @@ namespace Translator
                 {
                     if (!(myConverter.checkExistSymbol(Convert.ToString(rule[index]), finiteMachine.Count, true)))
                     {
-                        ErrorMessage.Text = "Извините данного терминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
+                        ErrorMessage.Text += "Извините данного терминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
                         return false;
                     }
                 }
@@ -123,6 +124,7 @@ namespace Translator
 
             listNonterminal.Text = senten;
             Start.Text = "Стартовый нетерминал: A";
+            info.Text = "Правила вводятся в форме AaB (A -> aB), Aa (A -> a), AE (A -> E)";
         }
 
         #region Events Handler
@@ -149,7 +151,8 @@ namespace Translator
             if (checkRule())
             {
                 fm.ConvertRuleTransition(RuleTransition.Text);
-                ErrorMessage.Text += "  " + RuleTransition.Text + "  ";
+               errormessage += "  " + RuleTransition.Text + "  ";
+                ErrorMessage.Text = errormessage;
             }
         }
 

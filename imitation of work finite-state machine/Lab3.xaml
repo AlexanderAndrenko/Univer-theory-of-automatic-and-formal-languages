@@ -37,12 +37,13 @@
             <TextBlock Grid.Row="1"  Width="auto" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,5" Text="Определите правила переходов:"/>
             <TextBlock Grid.Row="1" Name="listTerminal" Width="auto" Height="25"></TextBlock>
             <TextBlock Grid.Row="1" Name="listNonterminal"  Width="auto" Height="25"></TextBlock>
-            <TextBlock Grid.Row="1" Name="Start" Width="auto" Height="25"></TextBlock>            
+            <TextBlock Grid.Row="1" Name="Start" Width="auto" Height="25"></TextBlock>
+            <TextBlock Grid.Row="1" Name="info" Width="auto" Height="25"></TextBlock>
             <!--<TextBlock x:Name="transition" Visibility="Hidden" TextWrapping="Wrap"/>-->
             <StackPanel Orientation="Horizontal">
                 <TextBox x:Name="RuleTransition" Width="70" Height="25" HorizontalAlignment="Left" Margin="20,0,0,0"/>
                 <Button Name="SetRuleTransition" Margin="10,0,0,0" Height="25" Width="25" Click="SetRuleTransition_Click" >Ok</Button>
-                <TextBlock x:Name="ErrorMessage" Margin="5,0,0,0" Width="auto" TextWrapping="Wrap" Text="Правила грамматики: "/>
+                <TextBlock x:Name="ErrorMessage" Margin="5,0,0,0" Width="340" TextWrapping="Wrap" VerticalAlignment="Center"/>
             </StackPanel>
         </StackPanel>
 
@@ -54,7 +55,8 @@
                              ItemsSource2D="{Binding finiteMachine}"
                              RowBackground="White"
                              AlternatingRowBackground="#ebebeb"                       
-                             Background="Transparent">
+                             Background="Transparent"
+                             Visibility="Hidden">
         </dg2d:DataGrid2D>
         <ListBox Name="propertiesListBox"
                  Visibility="Hidden"

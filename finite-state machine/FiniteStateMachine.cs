@@ -82,22 +82,37 @@ namespace finite_state_machine
             int state = 0;
             int command = 0;
             int finalState = CountQuantityNonterminal() - 1;
-            string potentialNonterminal;
+            string potentialNonterminal = "A";
+            bool popStack = false;
             store = new Stack<string>();
+            store.Clear();
 
             for (int numberOfChain = 0; numberOfChain < chain.Length; numberOfChain++)
             {
                 command = Convert.ToInt32(chain[numberOfChain]) - 97;
 
-                if (finiteStateMachine[command][state].Length > 1)
+                if (!popStack)
                 {
-                    potentialNonterminal = Convert.ToString(finiteStateMachine[command][state].First());
-                    setStackElement(finiteStateMachine[command][state].Substring(1), numberOfChain);
+                    if (finiteStateMachine[command][state].Length > 1)
+                    {
+                        potentialNonterminal = Convert.ToString(finiteStateMachine[command][state].First());
+                        setStackElement(convertNumberToString(state) ,finiteStateMachine[command][state].Substring(1), numberOfChain);
+                        lineOfWorkProcess.Add("Добавление в стэк возможного перехода: " + potentialNonterminal + finiteStateMachine[command][state].Substring(1) + numberOfChain);
+                    }
+                    else if (state == CountQuantityNonterminal() - 1)
+                    {
+                        potentialNonterminal = convertNumberToString(state);
+                    }
+                    else
+                    {
+                        potentialNonterminal = finiteStateMachine[command][state];
+                    }
                 }
                 else
                 {
-                    potentialNonterminal = finiteStateMachine[command][state];
+                    popStack = false;
                 }
+                
 
                 if ((potentialNonterminal != "-") && convertStringToNumber(potentialNonterminal) < finiteStateMachine[command].Count)//Проверка что след. нетерминал присутствует в алфавите
                 {
@@ -119,6 +134,26 @@ namespace finite_state_machine
 
                             return true;
                         }
+                        else
+                        {
+                            if (!stackIsEmpty())
+                            {
+                                string pack = getStackElement();
+                                lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
+                                state = convertStringToNumber(Convert.ToString(pack[0]));
+                                potentialNonterminal = Convert.ToString(pack[1]);
+                                pack = pack.Substring(2);
+                                numberOfChain = Convert.ToInt32(pack) - 1;
+                                popStack = true;
+                                continue;
+                            }
+                            else
+                            {
+                                lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
+                                lineOfWorkProcess.Add("Следующий нетерминал при терминале " + command + " не определен.");
+                                break;
+                            }
+                        }
                     }
                     else //potentialNonterminal != ""
                     {
@@ -137,9 +172,12 @@ namespace finite_state_machine
                             else if (!stackIsEmpty())
                             {
                                 string pack = getStackElement();
+                                lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
                                 state = convertStringToNumber(Convert.ToString(pack[0]));
-                                pack = pack.Substring(1);
+                                potentialNonterminal = Convert.ToString(pack[1]);
+                                pack = pack.Substring(2);
                                 numberOfChain = Convert.ToInt32(pack) - 1;
+                                popStack = true;
                                 continue;
                             }
                             else
@@ -155,9 +193,12 @@ namespace finite_state_machine
                     if (!stackIsEmpty())
                     {
                         string pack = getStackElement();
+                        lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
                         state = convertStringToNumber(Convert.ToString(pack[0]));
-                        pack = pack.Substring(1);
+                        potentialNonterminal = Convert.ToString(pack[1]);
+                        pack = pack.Substring(2);
                         numberOfChain = Convert.ToInt32(pack) - 1;
+                        popStack = true;
                         continue;
                     }
                     else
@@ -172,9 +213,12 @@ namespace finite_state_machine
                     if (!stackIsEmpty())
                     {
                         string pack = getStackElement();
+                        lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
                         state = convertStringToNumber(Convert.ToString(pack[0]));
-                        pack = pack.Substring(1);
+                        potentialNonterminal = Convert.ToString(pack[1]);
+                        pack = pack.Substring(2);
                         numberOfChain = Convert.ToInt32(pack) - 1;
+                        popStack = true;
                         continue;
                     }
                     else
@@ -232,11 +276,13 @@ namespace finite_state_machine
         #region Private method
 
         #region For future maybe
-        private void setStackElement(string nonterminal, int position)
+        private void setStackElement(string prenonterminal ,string nextNonterminal, int position)
         {
-            for (int index = 0; index < nonterminal.Length; index++)
+            string pack = prenonterminal;
+
+            for (int index = 0; index < nextNonterminal.Length; index++)
             {
-                string pack = Convert.ToString(nonterminal[index]);
+                pack += Convert.ToString(nextNonterminal[index]);
                 pack += Convert.ToString(position);
                 store.Push(pack);
             }
@@ -305,7 +351,6 @@ namespace finite_state_machine
         private bool checkFinalState(string letterOfState)
         {
             string[] finalStateArr = new string[quantityFinalState];
-            int numberOfLetter = CountQuantityNonterminal() - 1 - quantityFinalState;
 
             for (int i = 0; i < finalStateArr.Length; i++)
             {
