@@ -151,7 +151,7 @@ namespace Translator
             if (checkRule())
             {
                 fm.ConvertRuleTransition(RuleTransition.Text);
-               errormessage += "  " + RuleTransition.Text + "  ";
+                errormessage += "  " + RuleTransition.Text + "  ";
                 ErrorMessage.Text = errormessage;
             }
         }

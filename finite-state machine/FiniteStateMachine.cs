@@ -7,17 +7,19 @@ using System.Collections.ObjectModel;
 
 namespace finite_state_machine
 {
+    /*метод checkFinalstate необходимо инициализацию финальных состояний вынести отдельный метод, массив типа string хранящий финальные состояния сделать локальным для всего класса.
+     * Необходимо реализовать возможность задавать финальные состояния не только с конца, но и в любом месте множества всех состояний
+     * По умолчанию при создании КА, скрытно от пользователя, в конец множества состояний добавляется ещё одно состояние (финальное) "t"
+     * Возможно имеет смысл продублировать таблицу перехода и массив финальных состояний, чтобы не потерять изначальную структуру, а после окончания работы алгоритма перезаписать изначальные на новые
+     * Алгоритм проверки входной цепочки, уже написан и по сути должен работать и для НКА и для ДКА. (Надо тестить) 
+     * Необходимо реализовать функция конвертации НКА в ДКА.*/
     public class FiniteStateMachine
     {
         #region Daclaration
-        /* данные в элементе коллекции хранятся в виде <A>::='a'<A> 
-         * где 'a' терминальный символ, <A> -нетерминал, который следует за терминалом. 
-         * Например B -> aA, тогда в столбец В на пересечении со строкой "а" (1) пишем 'a'::=<A>. Так как автомат недерминированный, то определяем два нетерминала <A><B>
-         * Пользователь может определить любой терминал*/
         public ObservableCollection<ObservableCollection<string>> finiteStateMachine;//Таблица переходов конечного автомата 
-        private Stack<string> store;
-        private int quantityFinalState;
-        private bool deterministic;
+        private Stack<string> store; //Магазин для НКА
+        private int quantityFinalState;//Количество финальных состояний
+        private bool deterministic;//Переменная отображающая НКА или ДКА создаваемый автомат
 
         #endregion //Daclaration
 
@@ -26,6 +28,7 @@ namespace finite_state_machine
         {
             ObservableCollection<ObservableCollection<string>> finiteStateMachine = ptr;
             quantityFinalState = quantityFinState;
+            deterministic = true;
 
             for (int i = 0; i < nonterminalAlphabet; i++)
             {
@@ -72,11 +75,6 @@ namespace finite_state_machine
             return quantityOfTerminal;
         }
         
-        /*Терминальные символы - это по сути тоже самое, что и команды из прошлой лабораторной работы.
-         * Поэтому имитация работы конечного автомата по сути и есть парсер цепочки терминальных символов.
-         * Только необходимо вместо цифр задавать какие-то буквы.
-         * Осталось придумать как трансформировать прошлый код под новую задачу*/
-
         public bool ParseWord(string parseWord, ObservableCollection<string> lineOfWorkProcess, string chain)//Парсинг строки с праволинейной грамматикой. Парсить начинаем с конца
         {
             int state = 0;
@@ -274,8 +272,7 @@ namespace finite_state_machine
         #endregion //Public method
 
         #region Private method
-
-        #region For future maybe
+               
         private void setStackElement(string prenonterminal ,string nextNonterminal, int position)
         {
             string pack = prenonterminal;
@@ -311,35 +308,7 @@ namespace finite_state_machine
             {
                 return false;
             }
-        }
-
-        private string getTerminalSymbol(string rule)//Правило хранится в формате <A>::='a'<AB>
-        {
-            rule = rule.Remove(0,7);
-            int index = rule.IndexOf("'",0,rule.Length);
-            rule = rule.Remove(index);
-
-            return rule;
-        }
-
-        private string getFirstNontemiinalSymbol(string rule)
-        {
-            rule = Convert.ToString(rule[1]);
-
-            return rule;
-        }
-
-        private string getNextNonterminalSymbols(string rule)
-        {
-            rule = rule.Remove(0, 7);
-            int index = rule.IndexOf("'", 0, rule.Length);
-            rule = rule.Remove(0, index + 1);
-            rule = rule.Remove(rule.Length - 1);
-
-            return rule;
-        }
-
-        #endregion //For future maybe
+        }      
 
         private string showWorkProcess(string previous, string next, int command)
         {
