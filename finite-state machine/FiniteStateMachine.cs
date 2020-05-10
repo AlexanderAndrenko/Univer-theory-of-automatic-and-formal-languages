@@ -20,15 +20,25 @@ namespace finite_state_machine
         private Stack<string> store; //Магазин для НКА
         private int quantityFinalState;//Количество финальных состояний
         private bool deterministic;//Переменная отображающая НКА или ДКА создаваемый автомат
+        string[] finalStateArr;//массив финальных состояний
+        private List<List<string>> Terminal;
+        private List<List<string>> Nonterminal;
 
         #endregion //Daclaration
 
         #region Constructor
-        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int nonterminalAlphabet, int terminalAlphabet, int quantityFinState)// конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
+        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int nonterminalAlphabet, int terminalAlphabet, int quantityFinState)// Реализация для лабораторной 2 конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
         {
             ObservableCollection<ObservableCollection<string>> finiteStateMachine = ptr;
             quantityFinalState = quantityFinState;
             deterministic = true;
+
+            finalStateArr = new string[quantityFinalState];
+
+            for (int i = 0; i < finalStateArr.Length; i++)
+            {
+                finalStateArr[i] = convertNumberToString(CountQuantityNonterminal() - 1 - i);
+            }
 
             for (int i = 0; i < nonterminalAlphabet; i++)
             {
@@ -39,12 +49,26 @@ namespace finite_state_machine
                     finiteStateMachine[i].Add((convertNumberToString(i)).ToString());
                 }
             }
+
+            Terminal = new List<List<string>>();//Инициализация кодировочной таблицы для терминалов
+            Nonterminal = new List<List<string>>();//Инициализация кодировочной таблицы для нетерминалов
+
+            /*Конечный автомат должен содержать хотя бы один нетерминал*/
+            Nonterminal.Add(new List<string>());
+            Nonterminal[0].Add("A");
         }
-        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int nonterminalAlphabet, int terminalAlphabet)// если не определено, что он детерминированный, то вызывается этот конструктор. конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
-        {
+        public FiniteStateMachine(ObservableCollection<ObservableCollection<string>> ptr, int nonterminalAlphabet, int terminalAlphabet)// Реализация для лабораторной 3 если не определено, что он детерминированный, то вызывается этот конструктор. конструктор класса, создаётся таблица перехода наполненная содержимым по умолчанию
+    {
             finiteStateMachine = ptr;
             quantityFinalState = 1;
             deterministic = false;
+
+            finalStateArr = new string[quantityFinalState];
+
+            for (int i = 0; i < finalStateArr.Length; i++)
+            {
+                finalStateArr[i] = convertNumberToString(CountQuantityNonterminal() - 1 - i);
+            }
 
             for (int i = 0; i < terminalAlphabet; i++)
             {
@@ -55,6 +79,19 @@ namespace finite_state_machine
                     finiteStateMachine[i].Add("-");//добавляем нетерминалы
                 }
             }
+
+            Terminal = new List<List<string>>();//Инициализация кодировочной таблицы для терминалов
+            Nonterminal = new List<List<string>>();//Инициализация кодировочной таблицы для нетерминалов
+
+            /*Конечный автомат должен содержать хотя бы один нетерминал*/
+            Nonterminal.Add(new List<string>());
+            Nonterminal[0].Add("A");
+        }
+        public FiniteStateMachine(string rules)//Реализация для лабораторной 4. Конструктор класса, задающийся только перечнем правил перехода.
+        {
+            Nonterminal = new List<List<string>>();//Инициализируем список нетерминалов
+            Terminal = new List<List<string>>();//Инициализируем список терминалов
+            PrepareRulesString(rules);
         }
 
         #endregion //Constructor
@@ -75,10 +112,10 @@ namespace finite_state_machine
             return quantityOfTerminal;
         }
         
-        public bool ParseWord(string parseWord, ObservableCollection<string> lineOfWorkProcess, string chain)//Парсинг строки с праволинейной грамматикой. Парсить начинаем с конца
+        public bool ParseWord(string parseWord, ObservableCollection<string> lineOfWorkProcess, string chain)//Парсинг строки с праволинейной грамматикой.
         {
             int state = 0;
-            int command = 0;
+            int command;
             int finalState = CountQuantityNonterminal() - 1;
             string potentialNonterminal = "A";
             bool popStack = false;
@@ -233,7 +270,7 @@ namespace finite_state_machine
 
 
         public void ConvertRuleTransition(string rule)
-        {
+        {            
             int preNonterminal = convertStringToNumber(Convert.ToString(rule[0]));
             int terminal;
             if (!(rule[1] == 'E'))
@@ -266,24 +303,148 @@ namespace finite_state_machine
                 {
                     finiteStateMachine[terminal][preNonterminal] += rule.Substring(2, 1);
                 }
-            }            
+            }                    
         }
+
+        /*public bool CheckRule(string rule)
+        {
+            for (int index = 0; index < rule.Length; index++)
+            {
+                if (index != 1)
+                {
+                    if (!(convertNumberToString(Convert.ToString(rule[index]), finiteMachine[0].Count, false)))
+                    {
+                        ErrorMessage.Text += "Извините данного нетерминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
+                        return false;
+                    }
+                }
+                else if (index == 1)
+                {
+                    if (!(myConverter.checkExistSymbol(Convert.ToString(rule[index]), finiteMachine.Count, true)))
+                    {
+                        ErrorMessage.Text += "Извините данного терминала " + Convert.ToString(rule[index]) + " нет в алфавите. Введите правило заново.";
+                        return false;
+                    }
+                }
+            }
+        }*/
 
         #endregion //Public method
 
         #region Private method
-               
-        private void setStackElement(string prenonterminal ,string nextNonterminal, int position)
+        
+        private void PrepareRulesString(string rules)
         {
-            string pack = prenonterminal;
+            
 
-            for (int index = 0; index < nextNonterminal.Length; index++)
+            while (rules != null)
             {
-                pack += Convert.ToString(nextNonterminal[index]);
-                pack += Convert.ToString(position);
-                store.Push(pack);
+                if (rules[0] != Convert.ToChar(" "))
+                {
+                    int indexOfGap = rules.IndexOf(" ");
+
+                    if (AddRule(rules.Substring(0, indexOfGap + 1)))
+                    {
+                        rules.Substring(0, indexOfGap + 1);
+                    }
+                    
+                    
+                }
             }
         }
+
+        private bool AddRule(string rule)
+        {
+            if (rule.Length < 3)
+            {
+                if (!NonterminalIsExist(Convert.ToString(rule[0])))
+                {
+                    AddNonterminal(Convert.ToString(rule[0]));
+                }
+
+                if (!TerminalIsExist(Convert.ToString(rule[1])))
+                {
+                    AddTerminal(Convert.ToString(rule[1]));
+                }
+
+                if (!NonterminalIsExist(Convert.ToString(rule[2])))
+                {
+                    AddNonterminal(Convert.ToString(rule[2]));
+                }
+                
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private void AddNonterminal(string nonterminal)//Добавляение нового терминала в список терминалов List<List<string> Nonterminal
+        {
+            if (Nonterminal.Count != 0)
+            {
+                Nonterminal.Add(new List<string>());//Инициализируем новый нетерминал
+                Nonterminal[Nonterminal.Count - 1].Add(Convert.ToString(Nonterminal.Count - 1));//Задаем минимальную кодировку для нетерминалов для внутреннего представления КА (так как добавляется в конец, берётся длинна списка нетерминалов минус единица)
+                Nonterminal[Nonterminal.Count - 1].Add(nonterminal);//Заносим значение вводимого нетерминала, для дальнейшей раскодировки
+            }
+            else
+            {
+                Nonterminal.Add(new List<string>());//Инициализируем новый нетерминал
+                Nonterminal[0].Add("0");//Задаем минимальную кодировку для нетерминалов для внутреннего представления КА (начинается с нуля)
+                Nonterminal[0].Add(nonterminal);//Заносим значение вводимого нетерминала, для дальнейшей раскодировки
+            }            
+        }
+        private void AddTerminal(string terminal)//Добавляение нового терминала в список терминалов List<List<string> Terminal
+        {
+            if (Terminal.Count != 0)
+            {
+                Terminal.Add(new List<string>());//Инициализируем новый нетерминал
+                Terminal[Terminal.Count - 1].Add(Convert.ToString(Terminal.Count - 1));//Задаем минимальную кодировку для нетерминалов для внутреннего представления КА (так как добавляется в конец, берётся длинна списка нетерминалов минус единица)
+                Terminal[Terminal.Count - 1].Add(terminal);//Заносим значение вводимого нетерминала, для дальнейшей раскодировки
+            }
+            else
+            {
+                Terminal.Add(new List<string>());//Инициализируем новый нетерминал
+                Terminal[0].Add("0");//Задаем минимальную кодировку для нетерминалов для внутреннего представления КА (начинается с нуля)
+                Terminal[0].Add(terminal);//Заносим значение вводимого нетерминала, для дальнейшей раскодировки
+            }
+        }
+        private bool NonterminalIsExist(string nonterminal)//Проверка, существует ли уже данный нетерминал
+        {
+            for (int index = 0; index < Nonterminal.Count; index++)
+            {
+                if (Nonterminal[index][1] == nonterminal)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        private bool TerminalIsExist(string terminal)//Проверка существует ли данный терминал
+        {
+            for (int index = 0; index < Terminal.Count; index++)
+            {
+                if (Nonterminal[index][1] == terminal)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void setStackElement(string prenonterminal ,string nextNonterminal, int position)
+            {
+                string pack = prenonterminal;
+
+                for (int index = 0; index < nextNonterminal.Length; index++)
+                {
+                    pack += Convert.ToString(nextNonterminal[index]);
+                    pack += Convert.ToString(position);
+                    store.Push(pack);
+                }
+            }
 
         private string getStackElement()
         {
@@ -295,8 +456,7 @@ namespace finite_state_machine
             {
                 return null;
             }
-                      
-        }
+         }
 
         private bool stackIsEmpty()
         {
@@ -319,13 +479,6 @@ namespace finite_state_machine
 
         private bool checkFinalState(string letterOfState)
         {
-            string[] finalStateArr = new string[quantityFinalState];
-
-            for (int i = 0; i < finalStateArr.Length; i++)
-            {
-                finalStateArr[i] = convertNumberToString(CountQuantityNonterminal() - 1 - i);
-            }
-
             for (int i = 0; i < finalStateArr.Length; i++)
             {
                 if (finalStateArr[i] == letterOfState)
@@ -351,6 +504,6 @@ namespace finite_state_machine
             return result;
         }
 
-        #endregion //Public method
+        #endregion //Private method
     }
 }
