@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Data;
 
 namespace finite_state_machine
 {
@@ -17,13 +18,16 @@ namespace finite_state_machine
     {
         #region Daclaration
         public ObservableCollection<ObservableCollection<string>> finiteStateMachine;//Таблица переходов конечного автомата 
+        public string addedRules = "";
+
         private Stack<string> store; //Магазин для НКА
         private int quantityFinalState;//Количество финальных состояний
         private bool deterministic;//Переменная отображающая НКА или ДКА создаваемый автомат
         private List<string> finalStateArr;//массив финальных состояний
-        string startState;
+        private string startState;
         private List<List<string>> Terminal;
         private List<List<string>> Nonterminal;
+
 
         #endregion //Daclaration
 
@@ -91,10 +95,10 @@ namespace finite_state_machine
         public FiniteStateMachine(string rules)//Реализация для лабораторной 4. Конструктор класса, задающийся только перечнем правил перехода.
         {
             finiteStateMachine = new ObservableCollection<ObservableCollection<string>>();
+            finiteStateMachine.Clear();
             Terminal = new List<List<string>>();//Инициализируем список терминалов
-
-            
-            
+            Nonterminal = new List<List<string>>();//Инициализация списка нетерминалов
+                        
             PrepareRulesString(rules);
         }
 
@@ -118,9 +122,8 @@ namespace finite_state_machine
         
         public bool ParseWord(string parseWord, ObservableCollection<string> lineOfWorkProcess, string chain)//Парсинг строки с праволинейной грамматикой.
         {
-            int state = 0;
+            int state = 1;
             int command;
-            int finalState = CountQuantityNonterminal() - 1;
             string potentialNonterminal = "A";
             bool popStack = false;
             store = new Stack<string>();
@@ -197,9 +200,11 @@ namespace finite_state_machine
                     else //potentialNonterminal != ""
                     {
                         lineOfWorkProcess.Add(showWorkProcess(convertNumberToString(state), potentialNonterminal, command));
-                        state = convertStringToNumber(potentialNonterminal);
+                        //state = convertStringToNumber(potentialNonterminal);
+                        state = indexOfNonterminalEncode(potentialNonterminal);
 
-                        if (numberOfChain + 1 == chain.Length && state != finalState)
+
+                        if (numberOfChain + 1 == chain.Length && checkFinalState(Convert.ToString(state)))
                         {
                             if (finiteStateMachine[CountQuantityTerminal() - 1][state] != "-")
                             {
@@ -274,43 +279,6 @@ namespace finite_state_machine
 
         public void ConvertRuleTransition(string rule)
         {
-
-            /*
-             * int preNonterminal = convertStringToNumber(Convert.ToString(rule[0]));
-            int terminal;
-
-            if (!(rule[1] == 'E'))
-            {
-                terminal = convertStringToNumber(Convert.ToString(rule[1])) - 32;
-            }
-            else
-            {
-                terminal = CountQuantityTerminal() - 1;
-            }
-
-            if (finiteStateMachine[terminal][preNonterminal] == "-")
-            {
-                if (rule.Length == 2)
-                {
-                    finiteStateMachine[terminal][preNonterminal] = convertNumberToString(CountQuantityNonterminal() - 1);
-                }
-                else
-                {
-                    finiteStateMachine[terminal][preNonterminal] = rule.Substring(2, 1);
-                }
-            }
-            else
-            {
-                if (rule.Length == 2)
-                {
-                    finiteStateMachine[terminal][preNonterminal] += convertNumberToString(CountQuantityNonterminal() - 1);
-                }
-                else
-                {
-                    finiteStateMachine[terminal][preNonterminal] += rule.Substring(2, 1);
-                }
-            }*/
-
             int preNonterminal = indexOfNonterminalEncode(Convert.ToString(rule[0]));
             int terminal = indexOfTerminalEncode(Convert.ToString(rule[1]));
 
@@ -329,11 +297,49 @@ namespace finite_state_machine
             {
                 if (rule.Length == 2)
                 {
-                    finiteStateMachine[terminal][preNonterminal] += convertNumberToString(CountQuantityNonterminal() - 1);
+                    finiteStateMachine[terminal][preNonterminal] += finalStateArr[0];
                 }
                 else
                 {
                     finiteStateMachine[terminal][preNonterminal] += rule.Substring(2, 1);
+                }
+            }
+        }
+
+        public void PrepareRulesString(string rules)//Обработка строки правил перехода подкачаенных из файла
+        {
+            while (rules != null)
+            {
+                if (rules[0] != Convert.ToChar(" "))//Если первый символ не пробел
+                {
+                    int indexOfGap = rules.IndexOf(" ");//Ищем первый проблем после символов
+
+                    if (indexOfGap >= 0)
+                    {
+                        if (AddRule(rules.Substring(0, indexOfGap)))//Добавляем правило перехода, если добавилось метод вернёт true, иначе false
+                        {
+                            addedRules += rules.Substring(0, indexOfGap);//Добавляем правило, которое прошло конвертацию во внутреннее представление для дальнейшего отображения для пользователя
+                        }
+
+                        rules = rules.Substring(indexOfGap);//Вырезаем правило, которое уже прошло обработку                    
+                    }
+                    else
+                    {
+                        AddRule(rules);
+                        rules = null;//Вырезаем правило, которое уже прошло обработку                    
+                    }
+                    
+                }
+                else
+                {
+                    for (int indexOfLastGap = 0; indexOfLastGap < rules.Length; indexOfLastGap++)//Поиск первого символа не пробела
+                    {
+                        if (rules[indexOfLastGap] != Convert.ToChar(" "))
+                        {
+                            rules = rules.Substring(indexOfLastGap);//Вырезаем символы пробелов
+                            break;//Выход из цикла поиска первого символа не пробела
+                        }
+                    }                    
                 }
             }
         }
@@ -364,42 +370,24 @@ namespace finite_state_machine
         #endregion //Public method
 
         #region Private method
-        
-        private void PrepareRulesString(string rules)
-        {
-            
 
-            while (rules != null)
-            {
-                if (rules[0] != Convert.ToChar(" "))
-                {
-                    int indexOfGap = rules.IndexOf(" ");
 
-                    if (AddRule(rules.Substring(0, indexOfGap + 1)))
-                    {
-                        rules.Substring(0, indexOfGap + 1);
-                    }
-                    
-                    
-                }
-            }
-        }
 
         private bool AddRule(string rule)
         {
-            if (rule.Length < 3)
+            if (rule.Length < 4 && rule.Length > 1)
             {
-                if (!NonterminalIsExist(Convert.ToString(rule[0])))
-                {
-                    AddNonterminal(Convert.ToString(rule[0]));
-                }
-
                 if (!TerminalIsExist(Convert.ToString(rule[1])))
                 {
                     AddTerminal(Convert.ToString(rule[1]));
                 }
 
-                if (!NonterminalIsExist(Convert.ToString(rule[2])))
+                if (!NonterminalIsExist(Convert.ToString(rule[0])))
+                {
+                    AddNonterminal(Convert.ToString(rule[0]));
+                }                
+
+                if (rule.Length != 2 && !NonterminalIsExist(Convert.ToString(rule[2])))
                 {
                     AddNonterminal(Convert.ToString(rule[2]));
                 }
@@ -417,7 +405,7 @@ namespace finite_state_machine
         #region Functions working with list of Nonterminal and Terminal
         private void AddNonterminal(string nonterminal)//Добавляение нового терминала в список терминалов List<List<string> Nonterminal
         {
-            if (Nonterminal.Count == 0)//Если список нетерминалов пуст (при первом выхове функции, то резервируем первый нетерминал для финального
+            if (Nonterminal.Count == 0)//Если список нетерминалов пуст (при первом вызове функции, то резервируем первый нетерминал для финального
             {
                 Nonterminal = new List<List<string>>();//Инициализируем список нетерминалов            
                 Nonterminal.Add(new List<string>());//Инициализируем новый нетерминал, резервируем первый нетерминал под финальный
@@ -425,12 +413,14 @@ namespace finite_state_machine
                 Nonterminal[0].Add("t");//Условное обозначение финального нетерминала
                 finalStateArr = new List<string>();
                 finalStateArr.Add(Nonterminal[0][0]);//Заносим в список финальных состояний, что финальное состояние в минимальной кодировке имеет номер "0"
+                /*finiteStateMachine.Add(new ObservableCollection<string>());*/
+                finiteStateMachine[0].Add("-");
             }
 
             Nonterminal.Add(new List<string>());//Инициализируем новый нетерминал
             Nonterminal[Nonterminal.Count - 1].Add(Convert.ToString(Nonterminal.Count - 1));//Задаем минимальную кодировку для нетерминалов для внутреннего представления КА (так как добавляется в конец, берётся длинна списка нетерминалов минус единица)
             Nonterminal[Nonterminal.Count - 1].Add(nonterminal);//Заносим значение вводимого нетерминала, для дальнейшей раскодировки
-            
+
             for (int indexTerminal = 0; indexTerminal < CountQuantityTerminal(); indexTerminal++)//При появлении нового нетерминала, к каждому терминалу добавляется дополнительное поле и по умолчанию значение ячейки устанвливается "-"
             {
                 finiteStateMachine[indexTerminal].Add("-");
@@ -451,9 +441,10 @@ namespace finite_state_machine
                 Terminal[0].Add(terminal);//Заносим значение вводимого нетерминала, для дальнейшей раскодировки
             }
 
+            finiteStateMachine.Add(new ObservableCollection<string>());
+
             for (int indexNonterminal = 0; indexNonterminal < CountQuantityNonterminal(); indexNonterminal++)//При добавлении нового терминала, добавляем ему все возможные нетерминалы и по умолчанию значение ячейки устанвливается "-"
-            {
-                finiteStateMachine.Add(new ObservableCollection<string>());
+            {                
                 finiteStateMachine[CountQuantityTerminal() - 1].Add("-");
             }
         }
@@ -473,7 +464,7 @@ namespace finite_state_machine
         {
             for (int index = 0; index < Terminal.Count; index++)
             {
-                if (Nonterminal[index][1] == terminal)
+                if (Terminal[index][1] == terminal)
                 {
                     return true;
                 }
@@ -555,7 +546,7 @@ namespace finite_state_machine
 
         private bool checkFinalState(string letterOfState)
         {
-            for (int i = 0; i < finalStateArr.Length; i++)
+            for (int i = 0; i < finalStateArr.Count; i++)
             {
                 if (finalStateArr[i] == letterOfState)
                 {

@@ -42,6 +42,11 @@ namespace Translator
         private void Laboratory3_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new Lab3());
-        }        
+        }
+
+        private void Laboratory4_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Lab4());
+        }
     }
 }

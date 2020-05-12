@@ -136,8 +136,7 @@ namespace Translator
             if (fm.ParseWord(chainOfcommand.Text, lineOfWorkProcess, chainOfcommand.Text))
             {
                 lineOfWorkProcess.Add("Цепочка относится к заданной регулярной грамматике");
-            }
-            
+            }           
         }
 
         private void SetSymbolOfAlphabet_Click(object sender, RoutedEventArgs e)

@@ -16,6 +16,7 @@
         <StackPanel x:Name="MainStackPanel" Background="{Binding}" Grid.Column="0" Orientation="Vertical" >
             <Button x:Name="Laboratory2" Content="Лабораторная 2" Height="25" FontSize="14" Click="Laboratory2_Click" />
             <Button x:Name="Laboratory3" Content="Лабораторная 3" Height="25" FontSize="14" Margin="0,5,0,0" Click="Laboratory3_Click" />
+            <Button x:Name="Laboratory4" Content="Лабораторная 4" Height="25" FontSize="14" Margin="0,5,0,0" Click="Laboratory4_Click" />
         </StackPanel>
 
         <Rectangle Grid.Column="1" Fill="Black" Margin="5,0,5,0" Width="1"/>
