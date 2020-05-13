@@ -52,6 +52,15 @@
             <TextBlock x:Name="CorrectRule"
                        Margin="3"
                        TextWrapping="Wrap"/>
+            <TextBlock Text="Выберите стартовое состояние:"/>
+            <StackPanel x:Name="spRadioButton"
+                        Orientation="Horizontal"
+                        MinHeight="30">
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Выбранное стартовое состояние: "/>
+                <TextBlock x:Name="start"/>
+            </StackPanel>
 
         </StackPanel>
             <StackPanel  Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical">

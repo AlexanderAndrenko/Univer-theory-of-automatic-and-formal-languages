@@ -39,6 +39,8 @@ namespace Translator
                 sr.Close();
                 fm = new FiniteStateMachine(textOfFile);
                 CorrectRule.Text = fm.addedRules;
+                SetRadioButtonStartNonterminal();
+                start.Text = fm.GetNameNonterminal(1);//По умолчанию стартовым задаётся первый нетерминал. 0 зарезервированно под финальный.
             }
         }
 
@@ -49,6 +51,24 @@ namespace Translator
             ShowFileText.Text = chainrules;
             fm = new FiniteStateMachine(chainrules);
             CorrectRule.Text = fm.addedRules;
+            SetRadioButtonStartNonterminal();
+        }
+
+        private void SetRadioButtonStartNonterminal()
+        {
+            spRadioButton.Children.Clear();
+
+            List<RadioButton> rb = new List<RadioButton>();
+
+            for (int index = 0; index < fm.CountQuantityNonterminal() - 1; index++)
+            {
+                rb.Add(new RadioButton());
+                rb[index].IsChecked = false;
+                rb[index].Content = fm.GetNameNonterminal(index + 1);
+                rb[index].GroupName = "startNonterminal";
+                rb[index].Checked += RadioButton_Checked;
+                spRadioButton.Children.Add(rb[index]);
+            }
         }
 
         private void setChainOfCommand_Click(object sender, RoutedEventArgs e)
@@ -59,6 +79,13 @@ namespace Translator
             {
                 lineOfWorkProcess.Add("Цепочка относится к заданной регулярной грамматике");
             }
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton pressed = (RadioButton)sender;
+            start.Text = pressed.Content.ToString();
+            fm.SetStartNonterminal(pressed.Content.ToString());
         }
     }
 }
