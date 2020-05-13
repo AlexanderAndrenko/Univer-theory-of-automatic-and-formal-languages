@@ -61,6 +61,16 @@
                 <TextBlock Text="Выбранное стартовое состояние: "/>
                 <TextBlock x:Name="start"/>
             </StackPanel>
+            <TextBlock Text="Выберите финальные состояния:"
+                       Margin="0,5,0,0"/>
+            <StackPanel x:Name="spCheckBox"
+                        Orientation="Horizontal"
+                        MinHeight="30">
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Выбранные финальные состояния: "/>
+                <TextBlock x:Name="finals"/>
+            </StackPanel>
 
         </StackPanel>
             <StackPanel  Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical">
