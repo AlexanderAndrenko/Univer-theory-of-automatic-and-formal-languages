@@ -36,7 +36,9 @@ namespace Translator
                 StreamReader sr = new StreamReader("rule.txt");
                 textOfFile += sr.ReadLine();
                 ShowFileText.Text = textOfFile;
+                sr.Close();
                 fm = new FiniteStateMachine(textOfFile);
+                CorrectRule.Text = fm.addedRules;
             }
         }
 
@@ -44,7 +46,9 @@ namespace Translator
         {
             string chainrules = ChainRules.Text;
             File.WriteAllText("rule.txt", chainrules);
+            ShowFileText.Text = chainrules;
             fm = new FiniteStateMachine(chainrules);
+            CorrectRule.Text = fm.addedRules;
         }
 
         private void setChainOfCommand_Click(object sender, RoutedEventArgs e)
