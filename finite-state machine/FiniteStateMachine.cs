@@ -5,15 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Security.Policy;
 
 namespace finite_state_machine
 {
-    /*метод checkFinalstate необходимо инициализацию финальных состояний вынести отдельный метод, массив типа string хранящий финальные состояния сделать локальным для всего класса.
-     * Необходимо реализовать возможность задавать финальные состояния не только с конца, но и в любом месте множества всех состояний
-     * По умолчанию при создании КА, скрытно от пользователя, в конец множества состояний добавляется ещё одно состояние (финальное) "t"
-     * Возможно имеет смысл продублировать таблицу перехода и массив финальных состояний, чтобы не потерять изначальную структуру, а после окончания работы алгоритма перезаписать изначальные на новые
-     * Алгоритм проверки входной цепочки, уже написан и по сути должен работать и для НКА и для ДКА. (Надо тестить) 
-     * Необходимо реализовать функция конвертации НКА в ДКА.*/
+    /*Необходимо реализовать функция конвертации НКА в ДКА.*/
     public class FiniteStateMachine
     {
         #region Daclaration
@@ -28,6 +24,33 @@ namespace finite_state_machine
         private List<List<string>> Terminal;
         private List<List<string>> Nonterminal;
 
+        struct DNA_Properties
+        {
+            #region Declaration
+            public ObservableCollection<ObservableCollection<string>> DNA_finiteStateMachine;//Таблица переходов ДКА
+            public List<string> DNA_finalStateArr;//массив финальных состояний ДКА
+            public int DNA_startNonterminal;
+            public List<List<string>> DNA_Terminal;
+            public List<List<string>> DNA_Nonterminal;
+            #endregion //Declaration
+
+            #region Constructor
+            public DNA_Properties(int _startNonterminal)
+            {
+                DNA_finiteStateMachine = new ObservableCollection<ObservableCollection<string>>();//Таблица переходов ДКА
+                DNA_finalStateArr = new List<string>();//массив финальных состояний ДКА
+                DNA_startNonterminal = _startNonterminal;
+                DNA_Terminal = new List<List<string>>();
+                DNA_Nonterminal = new List<List<string>>();
+            }
+            #endregion //Constructor
+
+            #region Finctions for convert NFA to DFA
+
+
+
+            #endregion //Finctions for convert NFA to DFA
+        }
 
         #endregion //Daclaration
 
@@ -110,187 +133,16 @@ namespace finite_state_machine
 
         public int CountQuantityNonterminal()
         {
-            //int quantityOfNonterminal = finiteStateMachine[0].Count; //ПОДЛЕЖИТ УДАЛЕНИЮ
-            int quantityOfNonterminal = Nonterminal.Count;
-
-            return quantityOfNonterminal;
+            return Nonterminal.Count;
         }
         public int CountQuantityTerminal()
         {
-            //int quantityOfTerminal = finiteStateMachine.Count; //ПОДЛЕЖИТ УДАЛЕНИЮ
-            int quantityOfTerminal = Terminal.Count;
-
-            return quantityOfTerminal;
+            return Terminal.Count;
         }
-
-        //public bool ParseWord(string parseWord, ObservableCollection<string> lineOfWorkProcess, string chain)//Парсинг строки с праволинейной грамматикой.
-        //{
-        //    int nonterminal = _startNonterminal;//Стартовый нетерминал в котором находится КА или находится в данный момент
-        //    int terminal = indexOfTerminalEncode(Convert.ToString(chain[0]));//Первый считанный терминал из цепочки
-        //    string potentialNonterminal = finiteStateMachine[terminal][nonterminal];//Нетерминал в который есть потенциальный переход 
-        //    bool popStack = false; //Условная переменная, отображающая был ли poр из стэка в прошлой итерации
-        //    store = new Stack<string>();//Инициализируем новый стэк (магазин) КА
-        //    store.Clear();//Очищаем стэк от мусора
-
-        //    for (int numberOfChain = 0; numberOfChain < chain.Length; numberOfChain++)
-        //    {
-        //        terminal = indexOfTerminalEncode(Convert.ToString(chain[numberOfChain]));//последний считанный терминал из цепочки
-
-        //        if (!popStack)//Если был возврат к состояния из стэка, то заново вносить возможные нетерминалы в стэк не надо, они уже были внесены в первый раз. Иначе будет зацикливание.
-        //        {
-        //            if (finiteStateMachine[terminal][nonterminal].Length > 1)
-        //            {
-        //                potentialNonterminal = Convert.ToString(finiteStateMachine[terminal][nonterminal].First());
-        //                setStackElement(GetNameNonterminal(nonterminal) ,finiteStateMachine[terminal][nonterminal].Substring(1), numberOfChain);
-        //                lineOfWorkProcess.Add("Добавление в стэк возможного перехода: " + potentialNonterminal + finiteStateMachine[terminal][nonterminal].Substring(1) + numberOfChain);
-        //            }
-        //            else if (checkFinalState(Convert.ToString(nonterminal)))//Проверка является ли следующий нетерминал финальным
-        //            {     
-        //                potentialNonterminal = GetNameNonterminal(nonterminal);
-        //            }
-        //            else
-        //            {
-        //                potentialNonterminal = finiteStateMachine[terminal][nonterminal];
-        //            }
-        //        }
-        //        else
-        //        {
-        //            popStack = false;
-        //        }
-
-
-        //        if ((potentialNonterminal != "-") && indexOfNonterminalEncode(potentialNonterminal) < finiteStateMachine[terminal].Count)//Проверка что след. нетерминал присутствует в алфавите
-        //        {
-        //            if (checkFinalState(potentialNonterminal))
-        //            {
-        //                if (numberOfChain + 1 == chain.Length)
-        //                {
-        //                    lineOfWorkProcess.Add(showWorkProcess(GetNameNonterminal(nonterminal), "t", GetNameTerminal(terminal)));
-        //                    lineOfWorkProcess.Add("Автомат достиг финального состояния!");
-        //                    lineOfWorkProcess.Add("Работа окончена.");
-
-        //                    return true;
-        //                }
-        //                else if(deterministic)
-        //                {
-        //                    lineOfWorkProcess.Add(showWorkProcess(GetNameNonterminal(nonterminal), "t", GetNameTerminal(terminal)));
-        //                    lineOfWorkProcess.Add("Автомат достиг финального состояния!");
-        //                    nonterminal = indexOfNonterminalEncode(potentialNonterminal);
-
-        //                    return true;
-        //                }
-        //                else
-        //                {
-        //                    if (!stackIsEmpty())
-        //                    {
-        //                        #region StackOutput
-        //                        string pack = getStackElement();
-        //                        lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
-        //                        nonterminal = indexOfNonterminalEncode(Convert.ToString(pack[0]));
-        //                        potentialNonterminal = Convert.ToString(pack[1]);
-        //                        pack = pack.Substring(2);
-        //                        numberOfChain = Convert.ToInt32(pack) - 1;
-        //                        popStack = true;
-        //                        continue;
-        //                        #endregion //StackOutput
-        //                    }
-        //                    else
-        //                    {
-        //                        lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
-        //                        lineOfWorkProcess.Add("Следующий нетерминал при терминале " + terminal + " не определен.");
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //            else //potentialNonterminal != ""
-        //            {
-        //                lineOfWorkProcess.Add(showWorkProcess(GetNameNonterminal(nonterminal), potentialNonterminal, GetNameTerminal(terminal)));
-        //                nonterminal = indexOfNonterminalEncode(potentialNonterminal);
-
-
-        //                if (numberOfChain + 1 == chain.Length && checkFinalState(GetNameNonterminal(nonterminal)))
-        //                {
-        //                    if (finiteStateMachine[CountQuantityTerminal() - 1][nonterminal] != "-")
-        //                    {
-        //                        lineOfWorkProcess.Add(showWorkProcess(GetNameNonterminal(nonterminal), potentialNonterminal, GetNameTerminal(terminal)));
-        //                        lineOfWorkProcess.Add("Автомат достиг финального состояния!");
-
-        //                        return true;
-        //                    }
-        //                    else if (!stackIsEmpty())
-        //                    {
-        //                        #region StackOutput
-        //                        string pack = getStackElement();
-        //                        lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
-        //                        nonterminal = indexOfNonterminalEncode(Convert.ToString(pack[0]));
-        //                        potentialNonterminal = Convert.ToString(pack[1]);
-        //                        pack = pack.Substring(2);
-        //                        numberOfChain = Convert.ToInt32(pack) - 1;
-        //                        popStack = true;
-        //                        continue;
-        //                        #endregion //StackOutput
-        //                    }
-        //                    else
-        //                    {
-        //                        lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
-        //                        lineOfWorkProcess.Add("Не достигнуто финальное состояние");
-        //                    }                            
-        //                }
-        //            }
-        //        }
-        //        else if (finiteStateMachine[terminal][nonterminal] == "-")
-        //        {
-        //            if (!stackIsEmpty())
-        //            {
-        //                #region StackOutput
-        //                string pack = getStackElement();
-        //                lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
-        //                nonterminal = indexOfNonterminalEncode(Convert.ToString(pack[0]));
-        //                potentialNonterminal = Convert.ToString(pack[1]);
-        //                pack = pack.Substring(2);
-        //                numberOfChain = Convert.ToInt32(pack) - 1;
-        //                popStack = true;
-        //                continue;
-        //                #endregion //StackOutput
-        //            }
-        //            else
-        //            {
-        //                lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
-        //                lineOfWorkProcess.Add("Следующий нетерминал при терминале " + terminal + " не определен.");
-        //                break;
-        //            }                    
-        //        }
-        //        else
-        //        {
-        //            if (!stackIsEmpty())
-        //            {
-        //                #region StackOutput
-        //                string pack = getStackElement();
-        //                lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
-        //                nonterminal = indexOfNonterminalEncode(Convert.ToString(pack[0]));
-        //                potentialNonterminal = Convert.ToString(pack[1]);
-        //                pack = pack.Substring(2);
-        //                numberOfChain = Convert.ToInt32(pack) - 1;
-        //                popStack = true;
-        //                continue;
-        //                #endregion //StackOutput
-        //            }
-        //            else
-        //            {
-        //                lineOfWorkProcess.Add("Ошибка. Аварийная остановка!");
-        //                lineOfWorkProcess.Add("Нетерминал отсутствует в алфавите.");
-        //                break;
-        //            }
-        //        }
-        //    }
-
-        //    return false;
-        //}
-
-        public bool ParseWord(string parseWord, ObservableCollection<string> lineOfWorkProcess, string chain)//Парсинг строки с праволинейной грамматикой.
+        public bool ParseWord(ObservableCollection<string> lineOfWorkProcess, string chain)//Парсинг строки с праволинейной грамматикой.
         {
             int nonterminal = _startNonterminal;//Стартовый нетерминал в котором находится КА или находится в данный момент
-            int terminal = indexOfTerminalEncode(Convert.ToString(chain[0]));//Первый считанный терминал из цепочки
+            int terminal = indexOfElementListEncode(Convert.ToString(chain[0]), Terminal);//Первый считанный терминал из цепочки
             string potentialNonterminal = finiteStateMachine[terminal][nonterminal];//Нетерминал в который есть потенциальный переход 
             bool popStack = false; //Условная переменная, отображающая был ли poр из стэка в прошлой итерации
             store = new Stack<string>();//Инициализируем новый стэк (магазин) КА
@@ -298,9 +150,9 @@ namespace finite_state_machine
 
             for (int numberOfChain = 0; numberOfChain < chain.Length; numberOfChain++)
             {
-                terminal = indexOfTerminalEncode(Convert.ToString(chain[numberOfChain]));//последний считанный терминал из цепочки
+                terminal = indexOfElementListEncode(Convert.ToString(chain[numberOfChain]), Terminal);//последний считанный терминал из цепочки
 
-                if (!TerminalIsExist(GetNameTerminal(terminal)))//Проверка существует ли терминал
+                if (!ElementListIsExist(GetNameTerminal(terminal), Terminal))//Проверка существует ли терминал
                 {
                     return false;
                 }
@@ -327,11 +179,11 @@ namespace finite_state_machine
                 if (potentialNonterminal != "-")//Проверка существует ли потенциальный нетерминал для перехода
                 {
                     lineOfWorkProcess.Add(showWorkProcess(GetNameNonterminal(nonterminal), potentialNonterminal, GetNameTerminal(terminal)));
-                    nonterminal = indexOfNonterminalEncode(potentialNonterminal);
+                    nonterminal = indexOfElementListEncode(potentialNonterminal, Nonterminal);
 
                     if (numberOfChain + 1 == chain.Length)
                     {
-                        if (checkFinalState(GetNameNonterminal(nonterminal)) || checkFinalState(finiteStateMachine[indexOfTerminalEncode("E")][nonterminal]))
+                        if (checkFinalState(GetNameNonterminal(nonterminal)) || checkFinalState(finiteStateMachine[indexOfElementListEncode("E", Terminal)][nonterminal]))
                         {
                             lineOfWorkProcess.Add("Автомат достиг финального состояния!");
                             return true;
@@ -341,7 +193,7 @@ namespace finite_state_machine
                             #region StackOutput
                             string pack = getStackElement();
                             lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
-                            nonterminal = indexOfNonterminalEncode(Convert.ToString(pack[0]));
+                            nonterminal = indexOfElementListEncode(Convert.ToString(pack[0]), Nonterminal);
                             potentialNonterminal = Convert.ToString(pack[1]);
                             pack = pack.Substring(2);
                             numberOfChain = Convert.ToInt32(pack) - 1;
@@ -364,7 +216,7 @@ namespace finite_state_machine
                         #region StackOutput
                         string pack = getStackElement();
                         lineOfWorkProcess.Add("Тупик. Возврат к значению из стэка: " + pack);
-                        nonterminal = indexOfNonterminalEncode(Convert.ToString(pack[0]));
+                        nonterminal = indexOfElementListEncode(Convert.ToString(pack[0]), Nonterminal);
                         potentialNonterminal = Convert.ToString(pack[1]);
                         pack = pack.Substring(2);
                         numberOfChain = Convert.ToInt32(pack) - 1;
@@ -383,10 +235,25 @@ namespace finite_state_machine
 
             return false;
         }
+        public bool ConvertNFAtoDFA()//Метод конвертации НКА в ДКА
+        {
+            if (!deterministic)//Проверка, может КА уже детерминированный
+            {
+                DNA_Properties dna = new DNA_Properties(_startNonterminal);
+                
+                
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }           
+        }
         public void ConvertRuleTransition(string rule)
         {
-            int preNonterminal = indexOfNonterminalEncode(Convert.ToString(rule[0]));
-            int terminal = indexOfTerminalEncode(Convert.ToString(rule[1]));
+            int preNonterminal = indexOfElementListEncode(Convert.ToString(rule[0]), Nonterminal);
+            int terminal = indexOfElementListEncode(Convert.ToString(rule[1]), Terminal);
 
             if (finiteStateMachine[terminal][preNonterminal] == "-")
             {
@@ -453,9 +320,9 @@ namespace finite_state_machine
         }
         public bool SetStartNonterminal(string startNonterminal)
         {
-            if (NonterminalIsExist(startNonterminal))
+            if (ElementListIsExist(startNonterminal, Nonterminal))
             {
-                _startNonterminal = indexOfNonterminalEncode(startNonterminal);
+                _startNonterminal = indexOfElementListEncode(startNonterminal, Nonterminal);
 
                 return true;
             }
@@ -470,14 +337,7 @@ namespace finite_state_machine
         {
             return Terminal[terminal][1];
         }
-        public void SetFinalState(string FinalState)
-        {
-            if (NonterminalIsExist(FinalState) && !checkFinalState(FinalState))
-            {
-                finalStateArr.Add(FinalState);
-            }
-        }
-
+        
         #endregion //Public method
 
         #region Private method
@@ -485,17 +345,17 @@ namespace finite_state_machine
         {
             if (rule.Length < 4 && rule.Length > 1)
             {
-                if (!TerminalIsExist(Convert.ToString(rule[1])))
+                if (!ElementListIsExist(Convert.ToString(rule[1]), Terminal))
                 {
                     AddTerminal(Convert.ToString(rule[1]));
                 }
 
-                if (!NonterminalIsExist(Convert.ToString(rule[0])))
+                if (!ElementListIsExist(Convert.ToString(rule[0]), Nonterminal))
                 {
                     AddNonterminal(Convert.ToString(rule[0]));
                 }                
 
-                if (rule.Length != 2 && !NonterminalIsExist(Convert.ToString(rule[2])))
+                if (rule.Length != 2 && !ElementListIsExist(Convert.ToString(rule[2]), Nonterminal))
                 {
                     AddNonterminal(Convert.ToString(rule[2]));
                 }
@@ -521,7 +381,6 @@ namespace finite_state_machine
                 Nonterminal[0].Add("t");//Условное обозначение финального нетерминала
                 finalStateArr = new List<string>();
                 finalStateArr.Add(Nonterminal[0][1]);//Заносим в список финальных состояний, что финальное состояние в минимальной кодировке имеет номер "0"
-                /*finiteStateMachine.Add(new ObservableCollection<string>());*/
                 finiteStateMachine[0].Add("-");
             }
 
@@ -556,11 +415,11 @@ namespace finite_state_machine
                 finiteStateMachine[CountQuantityTerminal() - 1].Add("-");
             }
         }
-        private bool NonterminalIsExist(string nonterminal)//Проверка, существует ли уже данный нетерминал
+        private bool ElementListIsExist(string nonterminal, List<List<string>> myList)//Проверка, существует ли уже данный нетерминал
         {
-            for (int index = 0; index < Nonterminal.Count; index++)
+            for (int index = 0; index < myList.Count; index++)
             {
-                if (Nonterminal[index][1] == nonterminal)
+                if (myList[index][1] == nonterminal)
                 {
                     return true;
                 }
@@ -568,42 +427,22 @@ namespace finite_state_machine
 
             return false;
         }
-        private bool TerminalIsExist(string terminal)//Проверка существует ли данный терминал
+        private int indexOfElementListEncode(string nonterminal, List<List<string>> myList)
         {
-            for (int index = 0; index < Terminal.Count; index++)
+            for (int index = 0; index < myList.Count; index++)
             {
-                if (Terminal[index][1] == terminal)
+                if (myList[index][1] == nonterminal)
                 {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        private int indexOfNonterminalEncode(string nonterminal)
-        {
-            for (int index = 0; index < Nonterminal.Count(); index++)
-            {
-                if (Nonterminal[index][1] == nonterminal)
-                {
-                    return Convert.ToInt32(Nonterminal[index][0]);
+                    return Convert.ToInt32(myList[index][0]);
                 }
             }
 
             return -1;
         }
-        private int indexOfTerminalEncode(string terminal)
+        private int QuantityElementList(List<List<string>> myList)
         {
-            for (int index = 0; index < Terminal.Count(); index++)
-            {
-                if (Terminal[index][1] == terminal)
-                {
-                    return Convert.ToInt32(Terminal[index][0]);
-                }
-            }
-
-            return -1;
-        }        
+            return myList.Count;
+        }
 
         #endregion //Functions working with list of Nonterminal and Terminal
 
@@ -619,7 +458,6 @@ namespace finite_state_machine
                     store.Push(pack);
                 }
             }
-
         private string getStackElement()
         {
             if (store.Count != 0)
@@ -631,7 +469,6 @@ namespace finite_state_machine
                 return null;
             }
          }
-
         private bool stackIsEmpty()
         {
             if (store.Count == 0)
@@ -643,7 +480,7 @@ namespace finite_state_machine
                 return false;
             }
         }
-        #endregion //Function working with Stack
+        #endregion //Function working with Stack        
 
         private bool CheckForDeterministic()//Проверка на детерминированность КА
         {

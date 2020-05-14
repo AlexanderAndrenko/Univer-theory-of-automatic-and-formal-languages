@@ -41,8 +41,6 @@ namespace Translator
                 CorrectRule.Text = fm.addedRules;
                 SetRadioButtonStartNonterminal();
                 start.Text = fm.GetNameNonterminal(1);//По умолчанию стартовым задаётся первый нетерминал. 0 зарезервированно под финальный.
-                SetCheckBoxFinalNonterminal();
-                finals.Text = "t";
             }
         }
 
@@ -54,7 +52,6 @@ namespace Translator
             fm = new FiniteStateMachine(chainrules);
             CorrectRule.Text = fm.addedRules;
             SetRadioButtonStartNonterminal();
-            SetCheckBoxFinalNonterminal();
         }
 
         private void SetRadioButtonStartNonterminal()
@@ -74,29 +71,21 @@ namespace Translator
             }
         }
 
-        private void SetCheckBoxFinalNonterminal()
-        {
-            spCheckBox.Children.Clear();
-
-            List<CheckBox> cb = new List<CheckBox>();
-
-            for (int index = 0; index < fm.CountQuantityNonterminal() - 1; index++)
-            {
-                cb.Add(new CheckBox());
-                cb[index].IsChecked = false;
-                cb[index].Content = fm.GetNameNonterminal(index + 1);
-                cb[index].Checked += CheckBox_Checked;
-                spRadioButton.Children.Add(cb[index]);
-            }
-        }
-
         private void setChainOfCommand_Click(object sender, RoutedEventArgs e)
         {
             lineOfWorkProcess = new ObservableCollection<string>();
             workProcess.ItemsSource = lineOfWorkProcess;
-            if (fm.ParseWord(chainOfcommand.Text, lineOfWorkProcess, chainOfcommand.Text))
+
+            if (chainOfcommand.Text.Length > 0)
+            {       
+                if (fm.ParseWord(lineOfWorkProcess, chainOfcommand.Text))
+                {
+                    lineOfWorkProcess.Add("Цепочка относится к заданной регулярной грамматике");
+                }
+            }
+            else
             {
-                lineOfWorkProcess.Add("Цепочка относится к заданной регулярной грамматике");
+                lineOfWorkProcess.Add("Цепочка пуста");
             }
         }
 
@@ -107,11 +96,6 @@ namespace Translator
             fm.SetStartNonterminal(pressed.Content.ToString());
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox check = (CheckBox)sender;
-            finals.Text = check.Content.ToString();
-            fm.SetFinalState(check.Content.ToString());
-        }
+
     }
 }

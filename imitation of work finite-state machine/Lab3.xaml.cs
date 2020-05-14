@@ -133,7 +133,7 @@ namespace Translator
         {
             lineOfWorkProcess = new ObservableCollection<string>();
             workProcess.ItemsSource = lineOfWorkProcess;
-            if (fm.ParseWord(chainOfcommand.Text, lineOfWorkProcess, chainOfcommand.Text))
+            if (fm.ParseWord( lineOfWorkProcess, chainOfcommand.Text))
             {
                 lineOfWorkProcess.Add("Цепочка относится к заданной регулярной грамматике");
             }           
