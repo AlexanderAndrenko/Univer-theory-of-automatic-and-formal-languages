@@ -311,7 +311,7 @@ namespace finite_state_machine
                     {
                         potentialNonterminal = Convert.ToString(finiteStateMachine[terminal][nonterminal].First());
                         setStackElement(GetNameNonterminal(nonterminal), finiteStateMachine[terminal][nonterminal].Substring(1), numberOfChain);
-                        lineOfWorkProcess.Add("Добавление в стэк возможного перехода: " + potentialNonterminal + finiteStateMachine[terminal][nonterminal].Substring(1) + numberOfChain);
+                        lineOfWorkProcess.Add("Добавление в стэк возможного перехода: " + GetNameNonterminal(nonterminal) + finiteStateMachine[terminal][nonterminal].Substring(1) + numberOfChain);
                     }
                     else
                     {
@@ -469,6 +469,13 @@ namespace finite_state_machine
         public string GetNameTerminal(int terminal)//Параметр - это код терминала в минимальной кодировке
         {
             return Terminal[terminal][1];
+        }
+        public void SetFinalState(string FinalState)
+        {
+            if (NonterminalIsExist(FinalState) && !checkFinalState(FinalState))
+            {
+                finalStateArr.Add(FinalState);
+            }
         }
 
         #endregion //Public method

@@ -41,6 +41,8 @@ namespace Translator
                 CorrectRule.Text = fm.addedRules;
                 SetRadioButtonStartNonterminal();
                 start.Text = fm.GetNameNonterminal(1);//По умолчанию стартовым задаётся первый нетерминал. 0 зарезервированно под финальный.
+                SetCheckBoxFinalNonterminal();
+                finals.Text = "t";
             }
         }
 
@@ -52,6 +54,7 @@ namespace Translator
             fm = new FiniteStateMachine(chainrules);
             CorrectRule.Text = fm.addedRules;
             SetRadioButtonStartNonterminal();
+            SetCheckBoxFinalNonterminal();
         }
 
         private void SetRadioButtonStartNonterminal()
@@ -71,6 +74,22 @@ namespace Translator
             }
         }
 
+        private void SetCheckBoxFinalNonterminal()
+        {
+            spCheckBox.Children.Clear();
+
+            List<CheckBox> cb = new List<CheckBox>();
+
+            for (int index = 0; index < fm.CountQuantityNonterminal() - 1; index++)
+            {
+                cb.Add(new CheckBox());
+                cb[index].IsChecked = false;
+                cb[index].Content = fm.GetNameNonterminal(index + 1);
+                cb[index].Checked += CheckBox_Checked;
+                spRadioButton.Children.Add(cb[index]);
+            }
+        }
+
         private void setChainOfCommand_Click(object sender, RoutedEventArgs e)
         {
             lineOfWorkProcess = new ObservableCollection<string>();
@@ -86,6 +105,13 @@ namespace Translator
             RadioButton pressed = (RadioButton)sender;
             start.Text = pressed.Content.ToString();
             fm.SetStartNonterminal(pressed.Content.ToString());
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox check = (CheckBox)sender;
+            finals.Text = check.Content.ToString();
+            fm.SetFinalState(check.Content.ToString());
         }
     }
 }
