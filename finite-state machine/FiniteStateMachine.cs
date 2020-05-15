@@ -24,28 +24,55 @@ namespace finite_state_machine
         private List<List<string>> Terminal;
         private List<List<string>> Nonterminal;
 
-        struct DNA_Properties
+        struct DFA_Properties
         {
             #region Declaration
-            public ObservableCollection<ObservableCollection<string>> DNA_finiteStateMachine;//Таблица переходов ДКА
-            public List<string> DNA_finalStateArr;//массив финальных состояний ДКА
-            public int DNA_startNonterminal;
-            public List<List<string>> DNA_Terminal;
-            public List<List<string>> DNA_Nonterminal;
+            public ObservableCollection<ObservableCollection<string>> DFA_finiteStateMachine;//Таблица переходов ДКА
+            public List<string> DFA_finalStateArr;//массив финальных состояний ДКА
+            public int DFA_startNonterminal;
+            public List<List<string>> DFA_Terminal;
+            public List<List<string>> DFA_Nonterminal;
             #endregion //Declaration
 
             #region Constructor
-            public DNA_Properties(int _startNonterminal)
+            public DFA_Properties(int _startNonterminal)
             {
-                DNA_finiteStateMachine = new ObservableCollection<ObservableCollection<string>>();//Таблица переходов ДКА
-                DNA_finalStateArr = new List<string>();//массив финальных состояний ДКА
-                DNA_startNonterminal = _startNonterminal;
-                DNA_Terminal = new List<List<string>>();
-                DNA_Nonterminal = new List<List<string>>();
+                DFA_finiteStateMachine = new ObservableCollection<ObservableCollection<string>>();//Таблица переходов ДКА
+                DFA_finalStateArr = new List<string>();//массив финальных состояний ДКА
+                DFA_startNonterminal = _startNonterminal;
+                DFA_Terminal = new List<List<string>>();
+                DFA_Nonterminal = new List<List<string>>();
             }
             #endregion //Constructor
 
             #region Finctions for convert NFA to DFA
+
+            public void CopyTerminal(List<List<string>> terminalList)//Копирование одного списка в другой
+            {
+                for (int index = 0; index < terminalList.Count; index++)
+                {
+                    DFA_Terminal.Add(new List<string>());
+
+                    for (int position = 0; position < terminalList[index].Count; position++)
+                    {
+                        DFA_Terminal[index].Add(terminalList[index][position]);
+                    }
+                }
+            }
+            public void CreateTerminalsInTable()//Создание терминалов в таблице переходов
+            {
+                for (int index = 0; index < DFA_Terminal.Count; index++)
+                {
+                    DFA_finiteStateMachine.Add(new ObservableCollection<string>());
+                }
+            }
+
+            public void SetNonterminal(string nonterminal)
+            {
+                DFA_Nonterminal.Add(new List<string>());
+                DFA_Nonterminal[DFA_Nonterminal.Count() - 1].Add(Convert.ToString(DFA_Nonterminal.Count() - 1));
+                DFA_Nonterminal[DFA_Nonterminal.Count() - 1].Add(nonterminal);
+            }
 
 
 
@@ -239,8 +266,21 @@ namespace finite_state_machine
         {
             if (!deterministic)//Проверка, может КА уже детерминированный
             {
-                DNA_Properties dna = new DNA_Properties(_startNonterminal);
-                
+                DFA_Properties dfa = new DFA_Properties(_startNonterminal);//Объявление структуры будущего ДКА
+
+                dfa.CopyTerminal(Terminal);//Так как терминалы для ДКА не изменятся, то копируем список терминалов НКА в список терминалов ДКА
+                dfa.CreateTerminalsInTable();
+                dfa.SetNonterminal(GetNameNonterminal(dfa.DFA_startNonterminal));//Создание стартового нетерминала
+
+                bool newNonterminal = true;//Переменная хранит данные был ли найдет новый нетерминал
+
+                do
+                {
+
+
+                    newNonterminal = false;
+                }
+                while(newNonterminal);             
                 
 
                 return true;
