@@ -32,16 +32,18 @@ namespace finite_state_machine
             public int DFA_startNonterminal;
             public List<List<string>> DFA_Terminal;
             public List<List<string>> DFA_Nonterminal;
+            public List<List<string>> Nonterminal_copy;
             #endregion //Declaration
 
             #region Constructor
-            public DFA_Properties(int _startNonterminal)
+            public DFA_Properties(int _startNonterminal, List<List<string>> nonterminal_copy)
             {
                 DFA_finiteStateMachine = new ObservableCollection<ObservableCollection<string>>();//Таблица переходов ДКА
                 DFA_finalStateArr = new List<string>();//массив финальных состояний ДКА
                 DFA_startNonterminal = _startNonterminal;
                 DFA_Terminal = new List<List<string>>();
                 DFA_Nonterminal = new List<List<string>>();
+                Nonterminal_copy = nonterminal_copy;
             }
             #endregion //Constructor
 
@@ -66,15 +68,95 @@ namespace finite_state_machine
                     DFA_finiteStateMachine.Add(new ObservableCollection<string>());
                 }
             }
-
             public void SetNonterminal(string nonterminal)
             {
                 DFA_Nonterminal.Add(new List<string>());
                 DFA_Nonterminal[DFA_Nonterminal.Count() - 1].Add(Convert.ToString(DFA_Nonterminal.Count() - 1));
                 DFA_Nonterminal[DFA_Nonterminal.Count() - 1].Add(nonterminal);
             }
+            public string GetNameNonterminal(int encodeIndex)
+            {
+                for (int i = 0; i < DFA_Nonterminal.Count; i++)
+                {
+                    if (DFA_Nonterminal[i][0] == Convert.ToString(encodeIndex))
+                    {
+                        return DFA_Nonterminal[i][1];
+                    }                    
+                }
 
+                return null;
+            }
+            public int GetEncodeNonterminal(string name)
+            {
+                for (int i = 0; i < DFA_Nonterminal.Count; i++)
+                {
+                    if (DFA_Nonterminal[i][1] == name)
+                    {
+                        return Convert.ToInt32(DFA_Nonterminal[i][0]);
+                    }
+                }
 
+                return -1;
+            }
+            public string SortNameNonterminal(string name)//Сортировка нетерминалов в ячейке таблицы переходов по возрастанию индексов
+            {
+                char[] sortNonterminal = new char[name.Length];
+
+                for (int index = 0; index < name.Length; index++)//Конвертация строки в массив char
+                {
+                    sortNonterminal[index] = name[index];
+                }
+
+                char temp;
+                
+                for (int i = 0; i < sortNonterminal.Length - 1; i++)
+                {
+                    for (int j = 0; j < sortNonterminal.Length - i - 1; j++)
+                    {
+                        if (NonterminalIsExist(Convert.ToString(sortNonterminal[j + 1]), Nonterminal_copy) && 
+                            NonterminalIsExist(Convert.ToString(sortNonterminal[j]), Nonterminal_copy) &&
+                            indexOfNonterminal_copyEncode(Convert.ToString(sortNonterminal[j + 1]), Nonterminal_copy) < indexOfNonterminal_copyEncode(Convert.ToString(sortNonterminal[j]), Nonterminal_copy))
+                        {
+                            temp = sortNonterminal[j + 1];
+                            sortNonterminal[j + 1] = sortNonterminal[j];
+                            sortNonterminal[j] = temp;
+                        }
+                    }
+                }
+
+                string finishName = "";
+
+                for (int index = 0; index < sortNonterminal.Length; index++)//Конвертация массива char в строку
+                {
+                    finishName += sortNonterminal[index];
+                }
+
+                return finishName;
+            }
+            private bool NonterminalIsExist(string nonterminal, List<List<string>> myList)//Проверка, существует ли уже данный нетерминал
+            {
+                for (int index = 0; index < myList.Count; index++)
+                {
+                    if (myList[index][1] == nonterminal)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            private int indexOfNonterminal_copyEncode(string nonterminal, List<List<string>> myList)
+            {
+                for (int index = 0; index < myList.Count; index++)
+                {
+                    if (myList[index][1] == nonterminal)
+                    {
+                        return Convert.ToInt32(myList[index][0]);
+                    }
+                }
+
+                return -1;
+            }
 
             #endregion //Finctions for convert NFA to DFA
         }
@@ -266,17 +348,39 @@ namespace finite_state_machine
         {
             if (!deterministic)//Проверка, может КА уже детерминированный
             {
-                DFA_Properties dfa = new DFA_Properties(_startNonterminal);//Объявление структуры будущего ДКА
+                DFA_Properties dfa = new DFA_Properties(_startNonterminal, Nonterminal);//Объявление структуры будущего ДКА
 
                 dfa.CopyTerminal(Terminal);//Так как терминалы для ДКА не изменятся, то копируем список терминалов НКА в список терминалов ДКА
                 dfa.CreateTerminalsInTable();
                 dfa.SetNonterminal(GetNameNonterminal(dfa.DFA_startNonterminal));//Создание стартового нетерминала
 
                 bool newNonterminal = true;//Переменная хранит данные был ли найдет новый нетерминал
+                                
+                string currentNonterminal = GetNameNonterminal(dfa.DFA_startNonterminal);// Текущий нетерминал
 
                 do
                 {
+                    for (int indexTerminal = 0; indexTerminal < dfa.DFA_Terminal.Count; indexTerminal++)
+                    {
+                        //string lotOfNonterminals = finiteStateMachine[indexTerminal][currentNonterminal];
 
+                        string nextNonterminal = "";//Строка всех нетерминалов в которые возможет переход             
+
+                        for (int nonterminal = 0; nonterminal < currentNonterminal.Length; nonterminal++)
+                        {
+                            string oneOfManyNonterminal = Convert.ToString(currentNonterminal[nonterminal]);//один нетерминал в которые возможен переход
+
+                            if (ElementListIsExist(oneOfManyNonterminal, Nonterminal))//Если нетерминал существует, то копируем все возможные переходы из него по данному терминалу 
+                            {
+                                nextNonterminal += finiteStateMachine[indexTerminal][indexOfElementListEncode(oneOfManyNonterminal, Nonterminal)];
+                            }                            
+                        }
+
+                        nextNonterminal = dfa.SortNameNonterminal(nextNonterminal);//Сортировка нетерминалов в которые возможен переход для дальнейшего сравнения
+                        dfa.DFA_finiteStateMachine[indexTerminal][dfa.GetEncodeNonterminal(currentNonterminal)] = nextNonterminal;//Присваивание в таблицу переходов возможных нетерминалов
+                    }
+
+                    //dfa.DFA_finiteStateMachine[indexTerminal][currentNonterminal] =
 
                     newNonterminal = false;
                 }
