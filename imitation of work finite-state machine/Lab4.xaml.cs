@@ -76,16 +76,14 @@ namespace Translator
             lineOfWorkProcess = new ObservableCollection<string>();
             workProcess.ItemsSource = lineOfWorkProcess;
 
-            if (chainOfcommand.Text.Length > 0)
-            {       
-                if (fm.ParseWord(lineOfWorkProcess, chainOfcommand.Text))
-                {
-                    lineOfWorkProcess.Add("Цепочка относится к заданной регулярной грамматике");
-                }
+            if (fm.ConvertNFAtoDFA())
+            {
+                lineOfWorkProcess.Add("Конвертация прошла успешно!");
             }
             else
             {
-                lineOfWorkProcess.Add("Цепочка пуста");
+                lineOfWorkProcess.Add("Конвертация не прошла!");
+                lineOfWorkProcess.Add("Конечный автомат уже является детерминированным.");
             }
         }
 

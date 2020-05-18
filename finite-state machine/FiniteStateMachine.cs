@@ -70,12 +70,12 @@ namespace finite_state_machine
                     DFA_finiteStateMachine.Add(new ObservableCollection<string>());
                 }
             }
-
-            /*ЗАДАЧИ*/
-            public void CreateNewNonterminalInTable()//НЕОБХОДИМА РЕАЛИЗАЦИЯ
+            public void CreateNewNonterminalInTable()//Добавление нового нетерминала в таблицу переходов ДКА
             {
-                /*Создание нового нетерминала в таблице переходов. 
-                 * Для каждого терминала новый нетерминал*/
+                for (int index = 0; index < DFA_finiteStateMachine.Count; index++)
+                {
+                    DFA_finiteStateMachine[index].Add("-");
+                }                
             }
             public string SortNameNonterminal(string name)//Сортировка нетерминалов в ячейке таблицы переходов по возрастанию индексов и удаление повторяющихся нетерминалов
             {
@@ -95,7 +95,7 @@ namespace finite_state_machine
                     {
                         if (NonterminalIsExist(Convert.ToString(sortNonterminal[j + 1]), Nonterminal_copy) &&
                             NonterminalIsExist(Convert.ToString(sortNonterminal[j]), Nonterminal_copy) &&
-                            indexOfNonterminal_copyEncode(Convert.ToString(sortNonterminal[j + 1]), Nonterminal_copy) < indexOfNonterminal_copyEncode(Convert.ToString(sortNonterminal[j]), Nonterminal_copy))
+                            indexOfNonterminal_copyEncode(Convert.ToString(sortNonterminal[j + 1]), Nonterminal_copy) > indexOfNonterminal_copyEncode(Convert.ToString(sortNonterminal[j]), Nonterminal_copy))
                         {
                             temp = sortNonterminal[j + 1];
                             sortNonterminal[j + 1] = sortNonterminal[j];
@@ -115,7 +115,7 @@ namespace finite_state_machine
 
                 for (int i = 0; i < deleteSame.Count; i++)
                 {
-                    for (int j = i + 1; j < deleteSame.Count - 1; j++)
+                    for (int j = i + 1; j < deleteSame.Count; j++)
                     {
                         if (deleteSame[i] == deleteSame[j])
                         {
@@ -141,7 +141,7 @@ namespace finite_state_machine
             }
 
             #region Functions for NewNonterminal list
-            public void SetNewNonterminal(string nonterminal)
+            public void SetNewNonterminal(string nonterminal)//Добавление нового нетерминала в список новых (неотрбаотанных нетерминалов)
             {
                 if (!NonterminalIsExist(nonterminal, NewNonterminal))
                 {
@@ -423,6 +423,7 @@ namespace finite_state_machine
                 dfa.CreateTerminalsInTable();
                 dfa.SetNonterminal(GetNameNonterminal(dfa.DFA_startNonterminal));//Создание стартового нетерминала
                 dfa.SetNewNonterminal(dfa.GetNameNonterminal(dfa.DFA_startNonterminal));//Добавление стартового нетерминала в список новых нетерминалов
+                dfa.CreateNewNonterminalInTable();//Создание нетерминало в таблице под стартовый нетерминал
 
                 string currentNonterminal = GetNameNonterminal(dfa.DFA_startNonterminal);// Текущий нетерминал
 
@@ -436,38 +437,44 @@ namespace finite_state_machine
                         {
                             string oneOfManyNonterminal = Convert.ToString(currentNonterminal[nonterminal]);//один нетерминал в которые возможен переход
 
-                            if (ElementListIsExist(oneOfManyNonterminal, Nonterminal))//Если нетерминал существует, то копируем все возможные переходы из него по данному терминалу 
+                            if (ElementListIsExist(oneOfManyNonterminal, Nonterminal) && finiteStateMachine[indexTerminal][indexOfElementListEncode(oneOfManyNonterminal, Nonterminal)] != "-")//Если нетерминал существует, то копируем все возможные переходы из него по данному терминалу 
                             {
                                 newNonterminal += finiteStateMachine[indexTerminal][indexOfElementListEncode(oneOfManyNonterminal, Nonterminal)];
-                            }                            
+                            }                
                         }
 
-                        newNonterminal = dfa.SortNameNonterminal(newNonterminal);//Сортировка нетерминалов в которые возможен переход для дальнейшего сравнения
-
-                        if (dfa.GetEncodeNonterminal(newNonterminal) == -1)//Если данного нетерминала нет в списке, то метод вернёт -1
+                        if (newNonterminal == "")
                         {
-                            dfa.SetNonterminal(newNonterminal);//созданин нового нетерминала в списке нетерминалов
-
-                            /*ЗАДАЧИ*/
-                            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                            //При создании нового нетерминала, так же необходимо создать нетерминалы в таблице переходов
-                            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            newNonterminal = "-";
                         }
+                        else
+                        {
+                            newNonterminal = dfa.SortNameNonterminal(newNonterminal);//Сортировка нетерминалов в которые возможен переход для дальнейшего сравнения
 
+                            if (dfa.GetEncodeNonterminal(newNonterminal) == -1)//Если данного нетерминала нет в списке, то метод вернёт -1
+                            {
+                                dfa.SetNonterminal(newNonterminal);//созданин нового нетерминала в списке нетерминалов
+                                dfa.CreateNewNonterminalInTable();//добавление нетерминала в таблицу переходов
+                                dfa.SetNewNonterminal(newNonterminal);//добавление нового нетерминала в список новых (неотбраотанных нетерминалов)
+                            }
+                        }
+                        
                         dfa.DFA_finiteStateMachine[indexTerminal][dfa.GetEncodeNonterminal(currentNonterminal)] = newNonterminal;//Присваивание в таблицу переходов возможных нетерминалов
                     }
 
+                    dfa.DeleteNewNonterminal(currentNonterminal);//удаление нетерминала из списка новых нетерминалов
+
+                    if (dfa.NewNonterminal.Count != 0)
+                    {
+                        currentNonterminal = dfa.NewNonterminal[0][1];
+                    }                    
+
                     /*ЗАДАЧИ*/
-                    /* Рассмотреть момент перехода в новому нетерминалу. 
-                     * Учитывается ли код нового нетерминала в минимальной кодировке?
-                     * Реализовать удаление уже отработанного нетерминала из списка новых нетерминалов, чтобы избежать создание одинаковых нетерминалов.*/
-
-                    //dfa.DFA_finiteStateMachine[indexTerminal][currentNonterminal] =
-
+                    /* Реализовать учёт финальных состояний. 
+                     * Сделать вывод новых правил перехода на экран*/
                 }
                 while (dfa.NewNonterminal.Count() != 0);             
                 
-
                 return true;
             }
             else
