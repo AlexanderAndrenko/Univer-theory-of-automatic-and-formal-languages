@@ -79,6 +79,7 @@ namespace Translator
             if (fm.ConvertNFAtoDFA())
             {
                 lineOfWorkProcess.Add("Конвертация прошла успешно!");
+                fm.RulesOfTransition(lineOfWorkProcess);
             }
             else
             {

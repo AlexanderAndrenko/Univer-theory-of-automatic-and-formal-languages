@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Security.Policy;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace finite_state_machine
 {
@@ -33,7 +34,7 @@ namespace finite_state_machine
             public List<List<string>> DFA_Terminal;
             public List<List<string>> DFA_Nonterminal;
             public List<List<string>> Nonterminal_copy;//Копия нетерминалов НКА
-            public List<List<string>> NewNonterminal;//Новые нетерминалы
+            public List<List<string>> NewNonterminal;//Новые нетерминалы. Надо было реализовать через стэк.
             #endregion //Declaration
 
             #region Constructor
@@ -139,6 +140,21 @@ namespace finite_state_machine
 
                 return finishName;
             }
+            public bool CheckContainFinalState(string nonterminal)//Функция проверка есть ли в новом нететрминале финальный нетерминал
+            {
+                for (int index = 0; index < nonterminal.Length; index++)
+                {
+                    if (nonterminal[index] == Convert.ToChar("t"))
+                    {                        
+                        return true;
+                    }
+                }
+                return false;
+            }
+            public void SetFinalState(string nonterminal)
+            {
+                DFA_finalStateArr.Add(nonterminal);
+            }
 
             #region Functions for NewNonterminal list
             public void SetNewNonterminal(string nonterminal)//Добавление нового нетерминала в список новых (неотрбаотанных нетерминалов)
@@ -152,7 +168,7 @@ namespace finite_state_machine
             }
             public void DeleteNewNonterminal(string nonterminal)//Удаление элемента из списка новых терминалов, после его обработки
             {
-                int indexEncode = GetEncodeNonterminal(nonterminal);
+                /*int indexEncode = GetEncodeNonterminal(nonterminal);
                 
                 for (int index = 0; index < NewNonterminal.Count; index++)
                 {
@@ -160,7 +176,9 @@ namespace finite_state_machine
                     {
                         NewNonterminal.RemoveAt(index);
                     }
-                }                
+                } */
+
+                NewNonterminal.RemoveAt(0);
             }
 
             #endregion //Functions for NewNonterminal list
@@ -226,6 +244,7 @@ namespace finite_state_machine
             }
 
             #endregion Functions for outside ancestor list nonterminal 
+                   
 
             #endregion //Finctions for convert NFA to DFA
         }
@@ -440,7 +459,7 @@ namespace finite_state_machine
                             if (ElementListIsExist(oneOfManyNonterminal, Nonterminal) && finiteStateMachine[indexTerminal][indexOfElementListEncode(oneOfManyNonterminal, Nonterminal)] != "-")//Если нетерминал существует, то копируем все возможные переходы из него по данному терминалу 
                             {
                                 newNonterminal += finiteStateMachine[indexTerminal][indexOfElementListEncode(oneOfManyNonterminal, Nonterminal)];
-                            }                
+                            }
                         }
 
                         if (newNonterminal == "")
@@ -456,9 +475,14 @@ namespace finite_state_machine
                                 dfa.SetNonterminal(newNonterminal);//созданин нового нетерминала в списке нетерминалов
                                 dfa.CreateNewNonterminalInTable();//добавление нетерминала в таблицу переходов
                                 dfa.SetNewNonterminal(newNonterminal);//добавление нового нетерминала в список новых (неотбраотанных нетерминалов)
+
+                                if (dfa.CheckContainFinalState(newNonterminal))//Если новый нетерминал содержит финальный, то он является финальным нетерминалом
+                                {
+                                    dfa.SetFinalState(newNonterminal);
+                                }
                             }
                         }
-                        
+
                         dfa.DFA_finiteStateMachine[indexTerminal][dfa.GetEncodeNonterminal(currentNonterminal)] = newNonterminal;//Присваивание в таблицу переходов возможных нетерминалов
                     }
 
@@ -467,14 +491,19 @@ namespace finite_state_machine
                     if (dfa.NewNonterminal.Count != 0)
                     {
                         currentNonterminal = dfa.NewNonterminal[0][1];
-                    }                    
-
-                    /*ЗАДАЧИ*/
-                    /* Реализовать учёт финальных состояний. 
-                     * Сделать вывод новых правил перехода на экран*/
+                    }
                 }
-                while (dfa.NewNonterminal.Count() != 0);             
-                
+                while (dfa.NewNonterminal.Count() != 0);
+
+                #region Transfer of state machine parameters
+
+                Nonterminal = dfa.DFA_Nonterminal;
+                finiteStateMachine = dfa.DFA_finiteStateMachine;
+                finalStateArr = dfa.DFA_finalStateArr;
+                deterministic = true;
+
+                #endregion Transfer of state machine parameters
+
                 return true;
             }
             else
@@ -568,6 +597,19 @@ namespace finite_state_machine
         public string GetNameTerminal(int terminal)//Параметр - это код терминала в минимальной кодировке
         {
             return Terminal[terminal][1];
+        }
+        public void RulesOfTransition(ObservableCollection<string> listOfRules)//Возвращает в список все правила перехода КА
+        {
+            for (int terminal = 0; terminal < CountQuantityTerminal(); terminal++)
+            {
+                for (int nonterminal = 0; nonterminal < CountQuantityNonterminal(); nonterminal++)
+                {
+                    if (finiteStateMachine[terminal][nonterminal] != "-")
+                    {
+                        listOfRules.Add(GetNameNonterminal(nonterminal) + GetNameTerminal(terminal) + finiteStateMachine[terminal][nonterminal]);
+                    }                    
+                }
+            }
         }
         
         #endregion //Public method
